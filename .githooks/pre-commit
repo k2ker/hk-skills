@@ -1,0 +1,15 @@
+#!/bin/sh
+# hk-skills pre-commit: 마켓플레이스 파생 md/json 동기화 + 구조 검증.
+# 활성화(클론마다 1회): git config core.hooksPath .githooks
+#
+# --fix 모드: 파생 파일(marketplace.json / README.md / SKILLS.md)을 SSOT에서
+# 재생성하고 git add까지 한 뒤 커밋 진행. 구조 위반(이름/디렉터리 불일치, 스킬명
+# 중복 등)이 있으면 스크립트가 non-zero로 끝나 커밋이 중단된다.
+ROOT="$(git rev-parse --show-toplevel)"
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-commit(hk-skills): node 없음 → 동기화 건너뜀. 나중에 'node scripts/sync-marketplace.mjs --fix' 수동 실행 권장." >&2
+  exit 0
+fi
+
+node "$ROOT/scripts/sync-marketplace.mjs" --fix

@@ -12,7 +12,7 @@
     {
       "name": "web",
       "source": "./plugins/web",
-      "description": "Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy."
+      "description": "Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy."
     },
     {
       "name": "rn",
@@ -28,6 +28,11 @@
       "name": "design",
       "source": "./plugins/design",
       "description": "Throwaway HTML mockups / design exploration before building: claude-design, sketch."
+    },
+    {
+      "name": "visuals",
+      "source": "./plugins/visuals",
+      "description": "Standalone visual assets from a prompt: architecture/infra diagrams (SVG/HTML), Excalidraw flowcharts & sequence diagrams, and infographics (layouts × styles)."
     }
   ]
 }

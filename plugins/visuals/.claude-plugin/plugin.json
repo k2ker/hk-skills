@@ -1,0 +1,5 @@
+{
+  "name": "visuals",
+  "description": "Standalone visual assets from a prompt: architecture/infra diagrams (SVG/HTML), Excalidraw flowcharts & sequence diagrams, and infographics (layouts × styles).",
+  "version": "0.1.0"
+}
