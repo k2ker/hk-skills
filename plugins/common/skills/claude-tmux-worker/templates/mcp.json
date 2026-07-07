@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tmux-bridge": {
+      "command": "npx",
+      "args": ["-y", "tmux-bridge-mcp"]
+    }
+  }
+}

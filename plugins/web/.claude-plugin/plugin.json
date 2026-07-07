@@ -1,0 +1,5 @@
+{
+  "name": "web",
+  "description": "Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy.",
+  "version": "0.1.0"
+}
