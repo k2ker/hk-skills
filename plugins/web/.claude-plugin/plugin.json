@@ -1,5 +1,8 @@
 {
   "name": "web",
   "description": "Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy.",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "author": {
+    "name": "hk"
+  }
 }

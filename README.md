@@ -7,12 +7,11 @@
 <!-- BUNDLES:START (auto: scripts/sync-marketplace.mjs) -->
 | 번들(플러그인) | 스킬 수 | 설명 |
 |---|---|---|
-| `common` | 23 | Stack-agnostic dev workflow: git & GitHub, debugging, quality gates, TDD, planning, code review, repo hygiene, secrets, TypeScript, tests, and Claude worker orchestration. |
-| `web` | 26 | Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy. |
+| `common` | 11 | Stack-agnostic workflow helpers: Claude worker orchestration, repo hygiene, secret redaction, skill creation/curation, TypeScript, Vitest, Node quality gates, and safe git rewrite guidance. |
+| `web` | 25 | Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy. |
 | `rn` | 0 | React Native / Expo mobile. (Placeholder — 아직 스킬 없음. RN 프로젝트 시작 시 skills/에 추가.) |
 | `supabase` | 2 | Supabase + Postgres: client/SSR, auth/RLS, migrations, query & schema best-practices. |
-| `design` | 2 | Throwaway HTML mockups / design exploration before building: claude-design, sketch. |
-| `visuals` | 3 | Standalone visual assets from a prompt: architecture/infra diagrams (SVG/HTML), Excalidraw flowcharts & sequence diagrams, and infographics (layouts × styles). |
+| `hermes-core` | 18 | Hermes core skills mirrored as a Claude Code plugin. Enable for Claude Code projects that want these core skills; exclude from Hermes profiles to avoid duplicates. |
 <!-- BUNDLES:END -->
 
 번들 표 · `marketplace.json` 설명 · `SKILLS.md` 인벤토리는 **커밋 훅이 자동 동기화**한다(수동 편집 금지). 원본은 파일시스템 + 각 `plugin.json`. 전체 스킬 목록은 [SKILLS.md](SKILLS.md).
@@ -43,6 +42,7 @@
 
 - clone + repo 신뢰 시 자동 설치 프롬프트. Hermes 불필요.
 - `settings.local.json`(gitignore) 말고 `settings.json`(커밋)에 둬야 다른 PC에도 전파.
+- `hermes-core`는 Claude Code에서 Hermes core skill 복사본이 필요할 때만 켠다. Hermes profile에는 중복 방지를 위해 연결하지 않는다.
 
 ## 스택별 조합 예
 

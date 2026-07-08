@@ -1,5 +1,8 @@
 {
   "name": "common",
-  "description": "Stack-agnostic dev workflow: git & GitHub, debugging, quality gates, TDD, planning, code review, repo hygiene, secrets, TypeScript, tests, and Claude worker orchestration.",
-  "version": "0.1.0"
+  "description": "Stack-agnostic workflow helpers: Claude worker orchestration, repo hygiene, secret redaction, skill creation/curation, TypeScript, Vitest, Node quality gates, and safe git rewrite guidance.",
+  "version": "0.1.0",
+  "author": {
+    "name": "hk"
+  }
 }

@@ -1,34 +1,22 @@
 # hk-skills — 스킬 인벤토리
 
-> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 56개 스킬 / 6개 번들.
+> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 56개 스킬 / 5개 번들.
 
-## common (23)
+## common (11)
 
-- `claude-code` — Delegate coding to Claude Code CLI (features, PRs).
 - `claude-code-development-workflow` — Coordinate Claude Code workers through tmux as the default development path for Hermes-style repo work, with project-local Claude files and skills as first-c…
 - `claude-tmux-worker` — Use when coordinating Claude Code (or another CLI coding agent) as a real interactive worker in a tmux / tmux-bridge-mcp session while you stay coordinator,…
 - `claude-worker-workflow` — Use when Claude Code works as the implementation worker for this repo.
 - `git-commit-rewrite-safety` — Safely correct git author identity and rewrite published commits with explicit verification and lease-protected pushes.
-- `github-auth` — GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login.
-- `github-code-review` — Review PRs: diffs, inline comments via gh or REST.
-- `github-issues` — Create, triage, label, assign GitHub issues via gh or REST.
-- `github-pr-workflow` — GitHub PR lifecycle: branch, commit, open, CI, merge.
-- `github-repo-management` — Clone/create/fork repos; manage remotes, releases.
 - `node-quality-gates` — Design and implement local and remote quality gates for Node, React, Next.js, Expo, and React Native projects: Husky, lint-staged, typecheck, tests, pre-push…
-- `plan` — Plan mode: write an actionable markdown plan to .hermes/plans/, no execution. Bite-sized tasks, exact paths, complete code.
 - `repository-hygiene` — Clean up repository clutter, stale docs, agent/tool artifacts, and synchronize API snapshots/documentation with the current source of truth. Use when the use…
-- `requesting-code-review` — Pre-commit review: security scan, quality gates, auto-fix.
 - `secret-redaction-and-verification` — Handle PATs, API keys, bot tokens, and other secrets safely: refuse raw values, report only paths or existence, verify access with non-secret calls, and guid…
-- `simplify-code` — Parallel 3-agent cleanup of recent code changes.
 - `skill-creator` — Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize a…
 - `skill-library-curation` — Curate class-level skills, consolidate narrow one-off entries, and maintain references/templates/scripts for reusable skill knowledge.
-- `spike` — Throwaway experiments to validate an idea before build.
-- `systematic-debugging` — 4-phase root cause debugging: understand bugs before fixing.
-- `test-driven-development` — TDD: enforce RED-GREEN-REFACTOR, tests before code.
 - `typescript-advanced-types` — Master TypeScript's advanced type system including generics, conditional types, mapped types, template literals, and utility types for building type-safe app…
 - `vitest` — Vitest fast unit testing framework powered by Vite with Jest-compatible API. Use when writing tests, mocking, configuring coverage, or working with test filt…
 
-## web (26)
+## web (25)
 
 - `api-only-boundary` — Use when adding client/server communication, API routes, server actions, or data fetching. Enforces that browser code never touches the DB directly and that…
 - `deploy-to-vercel` — Deploy applications and websites to Vercel. Use when the user requests deployment actions like "deploy my app", "deploy and give me the link", "push this liv…
@@ -37,7 +25,6 @@
 - `frontend-state-ui-guidelines` — Use when implementing forms, server-state fetching, HTTP clients, or UI motion — picks the right tool per concern. Defers per-tool detail to the dedicated sk…
 - `playwright-best-practices` — Use when writing Playwright tests, fixing flaky tests, debugging failures, implementing Page Object Model, configuring CI/CD, optimizing performance, mocking…
 - `playwright-cli` — Automate browser interactions, test web pages and work with Playwright tests.
-- `popular-web-designs` — 54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.
 - `shadcn` — Manages shadcn components and projects — adding, searching, fixing, debugging, styling, and composing UI, including chat interfaces. Provides project context…
 - `storybook` — Storybook 스토리 작성 및 CSF 3.0 베스트 프랙티스 스킬. 다음 상황에서 사용: (1) 새 스토리 파일(.stories.tsx, .stories.ts) 작성 시, (2) 기존 스토리 수정 시, (3) Args, Decorators, Parameters 설정 시, (4)…
 - `tailwind-design-system` — Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns. Use when creating component libraries, imple…
@@ -67,13 +54,23 @@ _아직 스킬 없음(placeholder)._
 - `supabase` — Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client li…
 - `supabase-postgres-best-practices` — Postgres performance optimization and best practices from Supabase. Use this skill when writing, reviewing, or optimizing Postgres queries, schema designs, o…
 
-## design (2)
-
-- `claude-design` — Design one-off HTML artifacts (landing, deck, prototype).
-- `sketch` — Throwaway HTML mockups: 2-3 design variants to compare.
-
-## visuals (3)
+## hermes-core (18)
 
 - `architecture-diagram` — Dark-themed SVG architecture/cloud/infra diagrams as HTML.
 - `baoyu-infographic` — Infographics: 21 layouts x 21 styles (信息图, 可视化).
+- `claude-code` — Delegate coding to Claude Code CLI (features, PRs).
+- `claude-design` — Design one-off HTML artifacts (landing, deck, prototype).
 - `excalidraw` — Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).
+- `github-auth` — GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login.
+- `github-code-review` — Review PRs: diffs, inline comments via gh or REST.
+- `github-issues` — Create, triage, label, assign GitHub issues via gh or REST.
+- `github-pr-workflow` — GitHub PR lifecycle: branch, commit, open, CI, merge.
+- `github-repo-management` — Clone/create/fork repos; manage remotes, releases.
+- `plan` — Plan mode: write an actionable markdown plan to .hermes/plans/, no execution. Bite-sized tasks, exact paths, complete code.
+- `popular-web-designs` — 54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.
+- `requesting-code-review` — Pre-commit review: security scan, quality gates, auto-fix.
+- `simplify-code` — Parallel 3-agent cleanup of recent code changes.
+- `sketch` — Throwaway HTML mockups: 2-3 design variants to compare.
+- `spike` — Throwaway experiments to validate an idea before build.
+- `systematic-debugging` — 4-phase root cause debugging: understand bugs before fixing.
+- `test-driven-development` — TDD: enforce RED-GREEN-REFACTOR, tests before code.

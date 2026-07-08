@@ -1,5 +1,6 @@
 {
   "name": "hk-skills",
+  "description": "hk's personal Claude Code skill marketplace, organized into opt-in plugin bundles for common development workflows, web, React Native, Supabase, and Hermes core skill mirrors.",
   "owner": {
     "name": "hk"
   },
@@ -7,7 +8,7 @@
     {
       "name": "common",
       "source": "./plugins/common",
-      "description": "Stack-agnostic dev workflow: git & GitHub, debugging, quality gates, TDD, planning, code review, repo hygiene, secrets, TypeScript, tests, and Claude worker orchestration."
+      "description": "Stack-agnostic workflow helpers: Claude worker orchestration, repo hygiene, secret redaction, skill creation/curation, TypeScript, Vitest, Node quality gates, and safe git rewrite guidance."
     },
     {
       "name": "web",
@@ -25,14 +26,9 @@
       "description": "Supabase + Postgres: client/SSR, auth/RLS, migrations, query & schema best-practices."
     },
     {
-      "name": "design",
-      "source": "./plugins/design",
-      "description": "Throwaway HTML mockups / design exploration before building: claude-design, sketch."
-    },
-    {
-      "name": "visuals",
-      "source": "./plugins/visuals",
-      "description": "Standalone visual assets from a prompt: architecture/infra diagrams (SVG/HTML), Excalidraw flowcharts & sequence diagrams, and infographics (layouts × styles)."
+      "name": "hermes-core",
+      "source": "./plugins/hermes-core",
+      "description": "Hermes core skills mirrored as a Claude Code plugin. Enable for Claude Code projects that want these core skills; exclude from Hermes profiles to avoid duplicates."
     }
   ]
 }

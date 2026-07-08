@@ -1,0 +1,8 @@
+{
+  "name": "hermes-core",
+  "description": "Hermes core skills mirrored as a Claude Code plugin. Enable for Claude Code projects that want these core skills; exclude from Hermes profiles to avoid duplicates.",
+  "version": "0.1.0",
+  "author": {
+    "name": "hk"
+  }
+}
