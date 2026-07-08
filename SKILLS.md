@@ -1,6 +1,6 @@
 # hk-skills — 스킬 인벤토리
 
-> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 56개 스킬 / 5개 번들.
+> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 38개 스킬 / 4개 번들.
 
 ## common (11)
 
@@ -53,24 +53,3 @@ _아직 스킬 없음(placeholder)._
 
 - `supabase` — Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client li…
 - `supabase-postgres-best-practices` — Postgres performance optimization and best practices from Supabase. Use this skill when writing, reviewing, or optimizing Postgres queries, schema designs, o…
-
-## hermes-core (18)
-
-- `architecture-diagram` — Dark-themed SVG architecture/cloud/infra diagrams as HTML.
-- `baoyu-infographic` — Infographics: 21 layouts x 21 styles (信息图, 可视化).
-- `claude-code` — Delegate coding to Claude Code CLI (features, PRs).
-- `claude-design` — Design one-off HTML artifacts (landing, deck, prototype).
-- `excalidraw` — Hand-drawn Excalidraw JSON diagrams (arch, flow, seq).
-- `github-auth` — GitHub auth setup: HTTPS tokens, SSH keys, gh CLI login.
-- `github-code-review` — Review PRs: diffs, inline comments via gh or REST.
-- `github-issues` — Create, triage, label, assign GitHub issues via gh or REST.
-- `github-pr-workflow` — GitHub PR lifecycle: branch, commit, open, CI, merge.
-- `github-repo-management` — Clone/create/fork repos; manage remotes, releases.
-- `plan` — Plan mode: write an actionable markdown plan to .hermes/plans/, no execution. Bite-sized tasks, exact paths, complete code.
-- `popular-web-designs` — 54 real design systems (Stripe, Linear, Vercel) as HTML/CSS.
-- `requesting-code-review` — Pre-commit review: security scan, quality gates, auto-fix.
-- `simplify-code` — Parallel 3-agent cleanup of recent code changes.
-- `sketch` — Throwaway HTML mockups: 2-3 design variants to compare.
-- `spike` — Throwaway experiments to validate an idea before build.
-- `systematic-debugging` — 4-phase root cause debugging: understand bugs before fixing.
-- `test-driven-development` — TDD: enforce RED-GREEN-REFACTOR, tests before code.
