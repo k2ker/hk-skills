@@ -42,6 +42,32 @@
 - clone + repo 신뢰 시 자동 설치 프롬프트. Hermes 불필요.
 - `settings.local.json`(gitignore) 말고 `settings.json`(커밋)에 둬야 다른 PC에도 전파.
 
+## Hermes에서 쓰는 법
+
+Hermes는 Claude plugin marketplace를 직접 설치하지 않고, 이 repo의 plugin bundle 안 `SKILL.md`들을 `skills.external_dirs`로 읽는다. 이 Mac mini에서는 다음 프로필이 `hk-skills`를 외부 skill library로 소비한다:
+
+- `default`
+- `webdev`
+- `klleon`
+- `agoldenwalnut`
+
+각 프로필 config의 핵심 설정:
+
+```yaml
+skills:
+  external_dirs:
+    - /Users/hyeong/.hermes/skill-libraries/core
+    - /Users/hyeong/.hermes/skill-libraries/common
+    - /Users/hyeong/Code/hk-skills/plugins
+```
+
+운영 원칙:
+
+- `hk-skills`에 들어간 개발 skill은 `npx skills update` 대상이 아니다.
+- 수정은 이 repo에서 `git pull` / edit / validate / `git commit` / `git push`로 관리한다.
+- Hermes 기존 세션은 `/reload-skills` 또는 `/new` 후 최신 skill index를 본다.
+- `wiki`, `family` 프로필에는 개발용 skill noise를 피하기 위해 연결하지 않는다.
+
 ## 스택별 조합 예
 
 - 웹(Next/Vite)+Supabase: `common web supabase`
