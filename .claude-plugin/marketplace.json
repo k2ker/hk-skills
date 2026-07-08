@@ -1,6 +1,6 @@
 {
   "name": "hk-skills",
-  "description": "hk's personal Claude Code skill marketplace, organized into opt-in plugin bundles for common development workflows, web, React Native, Supabase, and Hermes core skill mirrors.",
+  "description": "hk's personal Claude Code skill marketplace, organized into opt-in plugin bundles for common development workflows, web, React Native, and Supabase.",
   "owner": {
     "name": "hk"
   },
