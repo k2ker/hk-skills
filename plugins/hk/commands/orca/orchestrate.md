@@ -23,6 +23,8 @@ argument-hint: "[이번 사이클 타깃, 예: '홈 화면']"
 
 `orca-cli`는 full handoff엔 orchestration을 권하지 않지만, "다 했어?"를 폴링 않고 이벤트로 받으려면 supervised가 맞다. 명령은 `orchestration` 스킬 참조. ⚠️ 플래그 주의: dispatch=`--task`, task-update=`--id`(반대). 하트비트=alive(**답장 불필요**), 완료=`worker_done`.
 
+**⚠️ 모드 선택 강제:** 리드가 "완료되면 자동 진행"(이벤트 기반 완료)을 약속했으면 = **supervised 필수**, `orchestration` 스킬 반드시 로드. full handoff + 자체 파일/문자열 sentinel 폴링으로 대체 금지 — 협조적 sentinel은 워커가 안 남기면 조용히 정지한다(아래 liveness 함정).
+
 ## 레시피
 
 **P0 프로비저닝** — `worktree ps`로 감지, 없으면 리드가 `worktree create --parent-worktree active`(하위로 묶임; `--no-parent`는 독립). 역할은 `--name …-ui`/`…-data`로 드러내기.
@@ -49,8 +51,9 @@ argument-hint: "[이번 사이클 타깃, 예: '홈 화면']"
 
 ## 프로젝트-무관 함정 (스킬에 없는 것)
 
+- **워커 완료 감지 = liveness 필수(협조적 sentinel 단독 금지):** full handoff의 파일/문자열 sentinel도, supervised의 `worker_done`도, 워커가 **보고 없이 종료**(claude/codex 프로세스 exit → 터미널이 셸 프롬프트 `❯`로 복귀)하면 똑같이 타임아웃까지 조용히 걸린다. 리드 대기 루프는 **(sentinel/worker_done) OR (터미널 exit 감지)** 를 종료조건으로 걸고, exit 감지 시 sentinel 유무와 무관하게 **즉시 리드가 산출물을 직접 수확 + 검증**(코드는 끝났는데 self-verify·보고만 못 남긴 경우가 흔함). exit 판정 = `orca terminal read`의 status/tail(셸 프롬프트). ❌ 다중 sentinel AND 조건 + 무한/장기 타임아웃 단독 폴링 = 1워커 미보고 시 전체 정지.
 - **Codex 리뷰어:** 기본 on-request 승인 + 샌드박스 → pnpm/네트워크에서 멈추고 `orca`도 `runtime_unavailable`. **해법 = `codex --dangerously-bypass-approvals-and-sandbox -c model_reasoning_effort="xhigh"` + "정적 리뷰만" 브리프 + 결과는 파일.** 온보딩: 디렉터리 신뢰=Enter, 업데이트 알림 기본 "Update now"(설치!) → "2" Skip.
-- **pnpm ignored-builds(esbuild 등)** 가 검증·`git commit`(husky pre-commit) 막음 → 실행 명령엔 `--config.verify-deps-before-run=false`, 커밋엔 **`PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false git commit`**(⚠️ 대문자 env만 유효 — 소문자 `npm_config_…`는 no-op). 훅 통째 스킵(`--no-verify`)보다 정직.
+- **pnpm ignored-builds(esbuild 등)** 가 검증·`git commit`(husky pre-commit) 막음 → **ENV 형식 `PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false`** 를 export 후 실행·커밋(⚠️ 대문자 env만 유효 — 소문자 `npm_config_…`는 no-op). ⚠️ `pnpm --filter <pkg> <script> --config.verify-deps-before-run=false` 처럼 **CLI 플래그를 필터 실행 뒤에 붙이면 하위 스크립트 인자로 먹혀 무효** — 반드시 ENV 형식으로. 훅 통째 스킵(`--no-verify`)보다 정직.
 - **fresh 워크트리**(`--setup skip`): deps 없음 → 리드가 `pnpm install` + ORM codegen(예: `pnpm --filter <db-pkg> <generate-script>`, 더미 `DATABASE_URL`로 오프라인) + 베이스라인 검증 후 워커 투입.
 - **`git merge` 메시지 stdin(`-F -`) 불가** ("could not read file '-'") → `-F <file>` 또는 `-m`.
 - **보드는 수동:** orchestration task 상태 ≠ 보드(`workspaceStatus`). dispatch/worker_done이 보드를 옮겨준다고 **의존하지 말 것** — 리드가 `worktree set --workspace-status`로 직접(in-progress / in-review / completed).
