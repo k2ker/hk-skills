@@ -11,7 +11,7 @@
 | `web` | 25 | Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy. |
 | `rn` | 0 | React Native / Expo mobile. (Placeholder — 아직 스킬 없음. RN 프로젝트 시작 시 skills/에 추가.) |
 | `supabase` | 2 | Supabase + Postgres: client/SSR, auth/RLS, migrations, query & schema best-practices. |
-| `hk` | 0 | hk personal cross-project commands. /hk:orca:orchestrate — coordinate parallel Orca sub-worktree workers (provision → gather → brief → dispatch → cross-model review → fix loop → integration landing); command mechanics delegated to the orca-cli & orchestration skills. |
+| `hk` | 1 | hk personal cross-project commands and skills: pre-clear slash commands plus the hk-orca-orchestrate supervised Orca worktree orchestration skill. |
 <!-- BUNDLES:END -->
 
 번들 표 · `marketplace.json` 설명 · `SKILLS.md` 인벤토리는 **커밋 훅이 자동 동기화**한다(수동 편집 금지). 원본은 파일시스템 + 각 `plugin.json`. 전체 스킬 목록은 [SKILLS.md](SKILLS.md).

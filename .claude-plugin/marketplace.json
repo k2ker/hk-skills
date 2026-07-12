@@ -28,7 +28,7 @@
     {
       "name": "hk",
       "source": "./plugins/hk",
-      "description": "hk personal cross-project commands. /hk:orca:orchestrate — coordinate parallel Orca sub-worktree workers (provision → gather → brief → dispatch → cross-model review → fix loop → integration landing); command mechanics delegated to the orca-cli & orchestration skills."
+      "description": "hk personal cross-project commands and skills: pre-clear slash commands plus the hk-orca-orchestrate supervised Orca worktree orchestration skill."
     }
   ]
 }

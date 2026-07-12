@@ -1,6 +1,6 @@
 # hk-skills — 스킬 인벤토리
 
-> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 38개 스킬 / 5개 번들.
+> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 39개 스킬 / 5개 번들.
 
 ## common (11)
 
@@ -54,6 +54,6 @@ _아직 스킬 없음(placeholder)._
 - `supabase` — Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client li…
 - `supabase-postgres-best-practices` — Postgres performance optimization and best practices from Supabase. Use this skill when writing, reviewing, or optimizing Postgres queries, schema designs, o…
 
-## hk (0)
+## hk (1)
 
-_아직 스킬 없음(placeholder)._
+- `hk-orca-orchestrate` — Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle from provisioning through scouting, briefing, supervised dispatch, cross-…
