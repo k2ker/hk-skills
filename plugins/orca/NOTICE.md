@@ -9,7 +9,7 @@ This bundle vendors two skills verbatim so the `orca` plugin is **standalone**
 | `skills/orchestration/SKILL.md`  | `skills/orchestration/SKILL.md`  |
 
 - **Source:** https://github.com/stablyai/orca
-- **Pinned commit:** `26934b11bfb5bb02cd9f504a33498a67aa14fdeb` (branch `main`, vendored 2026-07-12)
+- **Pinned commit:** `e3721e8cf2d296b301fa81f9119a7d633cfd035d` (branch `main`, re-vendored 2026-07-20)
 - **Upstream install (for re-vendoring / updates):**
   `npx skills add https://github.com/stablyai/orca --skill orca-cli`
   `npx skills add https://github.com/stablyai/orca --skill orchestration`
