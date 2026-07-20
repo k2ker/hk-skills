@@ -1,20 +1,22 @@
 # Third-party notices — `orca` bundle
 
-This bundle vendors two skills verbatim so the `orca` plugin is **standalone**
+This bundle vendors three skills verbatim so the `orca` plugin is **standalone**
 (no dependency on the user's locally-installed Orca skills):
 
 | Skill (this bundle)              | Upstream path                    |
 | -------------------------------- | -------------------------------- |
 | `skills/orca-cli/SKILL.md`       | `skills/orca-cli/SKILL.md`       |
 | `skills/orchestration/SKILL.md`  | `skills/orchestration/SKILL.md`  |
+| `skills/computer-use/SKILL.md`   | `skills/computer-use/SKILL.md`   |
 
 - **Source:** https://github.com/stablyai/orca
 - **Pinned commit:** `e3721e8cf2d296b301fa81f9119a7d633cfd035d` (branch `main`, re-vendored 2026-07-20)
 - **Upstream install (for re-vendoring / updates):**
   `npx skills add https://github.com/stablyai/orca --skill orca-cli`
   `npx skills add https://github.com/stablyai/orca --skill orchestration`
+  `npx skills add https://github.com/stablyai/orca --skill computer-use`
 
-The two upstream `SKILL.md` files are kept **verbatim** (do not hand-edit — re-vendor
+The three upstream `SKILL.md` files are kept **verbatim** (do not hand-edit — re-vendor
 from upstream to update). The `skills/orca-workers/SKILL.md` skill in this bundle is
 original hk work, not part of the upstream project.
 

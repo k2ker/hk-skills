@@ -1,6 +1,6 @@
 # hk-skills — 스킬 인벤토리
 
-> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 41개 스킬 / 6개 번들.
+> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 42개 스킬 / 6개 번들.
 
 ## common (11)
 
@@ -59,8 +59,9 @@ _아직 스킬 없음(placeholder)._
 _아직 스킬 없음(placeholder)._
 
 
-## orca (3)
+## orca (4)
 
+- `computer-use` — Use Orca's computer-use CLI to inspect and operate local desktop app windows through accessibility trees, screenshots, and safe UI actions. Use for desktop a…
 - `orca-cli` — Use the public `orca` CLI to operate Orca-managed worktrees, folder contexts, terminals, repos, automations, worktree comments, and the browser embedded insi…
 - `orca-workers` — Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch…
 - `orchestration` — Use Orca orchestration for structured multi-agent coordination: threaded messages, blocking ask/reply flows, task dispatch, worker_done/escalation waits, tas…

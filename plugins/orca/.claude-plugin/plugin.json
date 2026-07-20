@@ -1,7 +1,7 @@
 {
   "name": "orca",
-  "description": "Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Bundles the official `orca-cli` & `orchestration` skills (vendored verbatim from stablyai/orca, MIT — see NOTICE.md) so it needs no locally-installed Orca skills.",
-  "version": "0.1.0",
+  "description": "Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Bundles the official `orca-cli`, `orchestration` & `computer-use` skills (vendored verbatim from stablyai/orca, MIT — see NOTICE.md) so it needs no locally-installed Orca skills.",
+  "version": "0.2.0",
   "author": {
     "name": "hk"
   }
