@@ -12,7 +12,7 @@
 | `rn` | 0 | React Native / Expo mobile. (Placeholder — 아직 스킬 없음. RN 프로젝트 시작 시 skills/에 추가.) |
 | `supabase` | 2 | Supabase + Postgres: client/SSR, auth/RLS, migrations, query & schema best-practices. |
 | `hk` | 0 | hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md). |
-| `orca` | 3 | Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Bundles the official `orca-cli` & `orchestration` skills (vendored verbatim from stablyai/orca, MIT — see NOTICE.md) so it needs no locally-installed Orca skills. |
+| `orca` | 4 | Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Bundles the official `orca-cli` & `orchestration` skills (vendored verbatim from stablyai/orca, MIT — see NOTICE.md) so it needs no locally-installed Orca skills. |
 <!-- BUNDLES:END -->
 
 번들 표 · `marketplace.json` 설명 · `SKILLS.md` 인벤토리는 **커밋 훅이 자동 동기화**한다(수동 편집 금지). 원본은 파일시스템 + 각 `plugin.json`. 전체 스킬 목록은 [SKILLS.md](SKILLS.md).
