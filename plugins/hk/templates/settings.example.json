@@ -1,0 +1,21 @@
+{
+  "extraKnownMarketplaces": {
+    "hk-skills": {
+      "source": { "source": "github", "repo": "k2ker/hk-skills" }
+    }
+  },
+  "enabledPlugins": {
+    "common@hk-skills": true,
+    "hk@hk-skills": true,
+    "web@hk-skills": false,
+    "supabase@hk-skills": false,
+    "orca@hk-skills": false
+  },
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+}

@@ -11,7 +11,7 @@
 | `web` | 25 | Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy. |
 | `rn` | 0 | React Native / Expo mobile. (Placeholder — 아직 스킬 없음. RN 프로젝트 시작 시 skills/에 추가.) |
 | `supabase` | 2 | Supabase + Postgres: client/SSR, auth/RLS, migrations, query & schema best-practices. |
-| `hk` | 0 | hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md). |
+| `hk` | 0 | hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md); /hk:setup bootstraps a consuming project's .claude/settings.json from the bundled template (marketplace + enabledPlugins + safe permission defaults, non-destructive merge). |
 | `orca` | 4 | Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Bundles the official `orca-cli`, `orchestration` & `computer-use` skills (vendored verbatim from stablyai/orca, MIT — see NOTICE.md) so it needs no locally-installed Orca skills. |
 <!-- BUNDLES:END -->
 
