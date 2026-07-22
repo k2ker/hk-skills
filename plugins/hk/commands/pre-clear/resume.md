@@ -1,13 +1,13 @@
 ---
-description: 새 세션 시작 시 .hk/pre-clear/handoff.md 읽고 이전 진행 상태·작업 메모리(워크플로우·역할) 복원·적용, 복원 완료 후 파일 자동 삭제
+description: 새 세션 시작 시 .hk/pre-clear/handoff.md 읽고 이전 진행 상태·작업 메모리(워크플로우·역할) 복원·적용, 복원 후 파일 소비(삭제 + gittracked면 커밋)
 ---
 
 # /hk:pre-clear:resume
 
-이전 세션이 `/hk:pre-clear:save`로 남긴 핸드오프 파일을 읽어 컨텍스트를 복원한다. 복원이 끝나면 핸드오프 파일을 **자동 삭제**한다 (1회성 정책).
+이전 세션이 `/hk:pre-clear:save`로 남긴 핸드오프 파일을 읽어 컨텍스트를 복원한다. 복원이 끝나면 핸드오프 파일을 **소비 처리**한다 — 삭제하고, gittracked면 그 삭제를 커밋해 다른 PC의 재사용(stale resume)을 막는다 (1회성 정책).
 
 - 읽기 대상: `.hk/pre-clear/handoff.md`
-- 삭제 시점: 사용자에게 복원 보고가 끝난 직후
+- 소비 시점: 사용자에게 복원 보고가 끝난 직후 (삭제 + gittracked면 커밋)
 - 짝 명령: `/hk:pre-clear:save`
 
 ## 실행 절차
@@ -69,21 +69,32 @@ git log <handoff-HEAD-sha>..HEAD --oneline 2>/dev/null
 **주의 사항:** <있으면 — 함정·전제·환경 의존성>
 ```
 
-### 4) 핸드오프 파일 자동 삭제
+### 4) 핸드오프 파일 소비 (삭제 + gittracked면 커밋)
 
-복원 보고가 끝난 직후 (사용자 응답 기다리지 않고) 즉시 삭제하고, **삭제됐는지 검증**한다:
+복원 보고가 끝난 직후 (사용자 응답 기다리지 않고) 핸드오프를 소비 처리한다. **gittracked면 그 삭제를 이 파일만 콕 집어 커밋**해야 다른 PC가 원격에 남은 핸드오프를 stale resume하지 않는다:
 
 ```bash
-rm -f .hk/pre-clear/handoff.md
-test ! -f .hk/pre-clear/handoff.md && echo OK || echo FAIL_STILL_EXISTS
+F=.hk/pre-clear/handoff.md
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1 && git ls-files --error-unmatch "$F" >/dev/null 2>&1; then
+  # tracked → 이 파일만 콕 집어 삭제 커밋 (다른 스테이징/작업 변경은 안 건드림)
+  git rm -f --quiet "$F"
+  git commit --quiet -m "chore(hk): consume pre-clear handoff" -- "$F" && echo COMMITTED || echo COMMIT_FAILED
+else
+  # untracked / gitignore → 단순 삭제 + 검증
+  rm -f "$F"
+  test ! -f "$F" && echo DELETED || echo FAIL_STILL_EXISTS
+fi
 ```
 
-- `FAIL_STILL_EXISTS`(권한·read-only FS 등) → stale 파일이 다음 세션 resume을 오염시키므로 사용자에게 "삭제 실패 — 다음 세션 오염 방지 위해 수동 제거 필요"라고 보고.
+- **`COMMITTED`** → 소비 완료. **push는 자동으로 하지 않는다**(브랜치의 다른 작업 커밋까지 밀려나므로) — 이 삭제는 사용자의 평소 push 때 다른 PC로 전파된다. 다른 PC 인계가 임박했으면 "지금 push하면 그 PC가 stale resume을 피한다"고 안내.
+- **`DELETED`** → untracked였고 단순 삭제 완료.
+- **`COMMIT_FAILED`** → 사용자에게 보고(수동 처리). 작업은 계속 가능.
+- **`FAIL_STILL_EXISTS`** (untracked인데 권한·read-only FS) → stale 파일이 다음 resume을 오염시키므로 수동 제거 안내.
 
 ### 5) 다음 액션 안내
 
 ```
-핸드오프 파일은 삭제되었습니다. 위 우선순위대로 진행할까요? 아니면 다른 작업으로 시작하시겠습니까?
+핸드오프는 소비 처리되었습니다 (삭제 / gittracked면 커밋까지). 위 우선순위대로 진행할까요? 아니면 다른 작업으로 시작하시겠습니까?
 ```
 
 ## 복원 원칙
@@ -93,7 +104,7 @@ test ! -f .hk/pre-clear/handoff.md && echo OK || echo FAIL_STILL_EXISTS
 - **민감정보 보호** — handoff에 민감정보가 직접 적혀 있으면 그대로 재출력하지 말고
   redacted 처리 후 사용자에게 파일 정리를 권고한다.
 - **참조 파일은 미리 열지 않음** — 사용자가 다음 작업을 지시하면 그때 읽음 (불필요 토큰 소비 방지).
-- **삭제는 자동·무확인** — 사용자가 명시적으로 동의한 정책. "삭제할까요?" 같은 확인 질문 금지.
+- **삭제·커밋은 자동·무확인** — 사용자가 명시적으로 동의한 정책. "삭제할까요?"·"커밋할까요?" 확인 질문 금지. 단 **push는 자동으로 하지 않는다**(브랜치의 다른 작업 커밋까지 밀려나므로) — 사용자의 평소 push에 맡긴다.
 - **읽기 실패 시** — 파일 손상·권한 등으로 읽기 실패하면 사용자에게 보고하고 삭제하지 않음. 사용자가 직접 처리.
 
 ## 안티패턴
