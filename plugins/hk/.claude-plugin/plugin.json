@@ -1,7 +1,7 @@
 {
   "name": "hk",
   "description": "hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md).",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": {
     "name": "hk"
   }
