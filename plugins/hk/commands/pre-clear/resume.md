@@ -78,7 +78,7 @@ rm -f .hk/pre-clear/handoff.md
 test ! -f .hk/pre-clear/handoff.md && echo OK || echo FAIL_STILL_EXISTS
 ```
 
-- `FAIL_STILL_EXISTS`(권한·read-only·git-tracked 등) → stale 파일이 다음 세션 resume을 오염시키므로 사용자에게 "삭제 실패 — 다음 세션 오염 방지 위해 수동 제거 필요"라고 보고.
+- `FAIL_STILL_EXISTS`(권한·read-only FS 등) → stale 파일이 다음 세션 resume을 오염시키므로 사용자에게 "삭제 실패 — 다음 세션 오염 방지 위해 수동 제거 필요"라고 보고.
 
 ### 5) 다음 액션 안내
 
