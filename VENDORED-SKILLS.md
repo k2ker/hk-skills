@@ -75,10 +75,22 @@ npx skills add DaleStudy/skills             --skill storybook --copy
 npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max --copy
 ```
 
-## 삭제 대상 아님 (자작 스킬 — repo에 유지)
+## 자작 스킬 — repo에 유지
 
-`claude-tmux-worker`, `claude-worker-workflow`, `git-commit-rewrite-safety`, `node-quality-gates`,
-`repository-hygiene`, `secret-redaction-and-verification`, `skill-library-curation`, `orca-workers`,
-`api-only-boundary`, `frontend-state-ui-guidelines`, `web-component-patterns`, `web-context-patterns`,
-`web-nextjs-patterns`, `web-tailwind-patterns`, `web-tanstack-query-patterns`
-그리고 `claude-code-development-workflow`(출처 미확정 — 자작 추정, 삭제 보류).
+`orca-workers`, `api-only-boundary`, `frontend-state-ui-guidelines`,
+`web-component-patterns`, `web-context-patterns`, `web-nextjs-patterns`,
+`web-tailwind-patterns`, `web-tanstack-query-patterns`
+
+## common 번들 제거 (2026-07-22, 클린 목적)
+
+common 번들 전체(8개 스킬 + plugin.json)를 일괄 제거했다 — 전부 Hermes 세션에서
+vendor된 오염 산출물(author: Hermes Agent, 남의 워크스페이스 경로·`hyeong` 호명·
+stale 참조·삼중 중복). 분석상 keep 0/8. store 스킬이 아니라 `npx skills add`로 되받을
+수 없으며, **복구는 git 전용**:
+
+```bash
+git checkout <이 커밋^> -- plugins/common
+```
+
+향후 리워크 후보(진짜 재사용 가치 있던 것, 오염 제거 조건): `claude-tmux-worker`
+(워커 오케스트레이션 몸통), `repository-hygiene`, `node-quality-gates`.

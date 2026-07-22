@@ -6,11 +6,6 @@
   },
   "plugins": [
     {
-      "name": "common",
-      "source": "./plugins/common",
-      "description": "Stack-agnostic workflow helpers: Claude worker orchestration, repo hygiene, secret redaction, skill creation/curation, TypeScript, Vitest, Node quality gates, and safe git rewrite guidance."
-    },
-    {
       "name": "web",
       "source": "./plugins/web",
       "description": "Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy."

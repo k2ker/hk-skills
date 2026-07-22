@@ -7,7 +7,6 @@
 <!-- BUNDLES:START (auto: scripts/sync-marketplace.mjs) -->
 | 번들(플러그인) | 스킬 수 | 설명 |
 |---|---|---|
-| `common` | 8 | Stack-agnostic workflow helpers: Claude worker orchestration, repo hygiene, secret redaction, skill creation/curation, TypeScript, Vitest, Node quality gates, and safe git rewrite guidance. |
 | `web` | 7 | Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy. |
 | `rn` | 0 | React Native / Expo mobile. (Placeholder — 아직 스킬 없음. RN 프로젝트 시작 시 skills/에 추가.) |
 | `supabase` | 0 | Supabase + Postgres: client/SSR, auth/RLS, migrations, query & schema best-practices. |

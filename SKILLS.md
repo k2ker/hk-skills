@@ -1,17 +1,6 @@
 # hk-skills — 스킬 인벤토리
 
-> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 16개 스킬 / 6개 번들.
-
-## common (8)
-
-- `claude-code-development-workflow` — Coordinate Claude Code workers through tmux as the default development path for Hermes-style repo work, with project-local Claude files and skills as first-c…
-- `claude-tmux-worker` — Use when coordinating Claude Code (or another CLI coding agent) as a real interactive worker in a tmux / tmux-bridge-mcp session while you stay coordinator,…
-- `claude-worker-workflow` — Use when Claude Code works as the implementation worker for this repo.
-- `git-commit-rewrite-safety` — Safely correct git author identity and rewrite published commits with explicit verification and lease-protected pushes.
-- `node-quality-gates` — Design and implement local and remote quality gates for Node, React, Next.js, Expo, and React Native projects: Husky, lint-staged, typecheck, tests, pre-push…
-- `repository-hygiene` — Clean up repository clutter, stale docs, agent/tool artifacts, and synchronize API snapshots/documentation with the current source of truth. Use when the use…
-- `secret-redaction-and-verification` — Handle PATs, API keys, bot tokens, and other secrets safely: refuse raw values, report only paths or existence, verify access with non-secret calls, and guid…
-- `skill-library-curation` — Curate class-level skills, consolidate narrow one-off entries, and maintain references/templates/scripts for reusable skill knowledge.
+> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 8개 스킬 / 5개 번들.
 
 ## web (7)
 

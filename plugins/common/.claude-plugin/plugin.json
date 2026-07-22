@@ -1,8 +1,0 @@
-{
-  "name": "common",
-  "description": "Stack-agnostic workflow helpers: Claude worker orchestration, repo hygiene, secret redaction, skill creation/curation, TypeScript, Vitest, Node quality gates, and safe git rewrite guidance.",
-  "version": "0.1.0",
-  "author": {
-    "name": "hk"
-  }
-}
