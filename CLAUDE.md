@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `hk-skills`는 애플리케이션이 아니라 **Claude Code 플러그인 마켓플레이스**다. 스킬(SKILL.md), 슬래시 커맨드, 훅을 번들(플러그인) 단위로 모아 여러 프로젝트/PC에서 공유·중앙관리한다. 런타임 코드도, 빌드도, 의존성도 없다 — 유일한 실행 코드는 파생 파일을 동기화하는 zero-dep node 스크립트 하나다.
 
-번들: `common`(stack-agnostic 워크플로우), `web`(React/Next/Vite 프론트엔드), `supabase`(DB/Auth), `rn`(placeholder), `hk`(개인 커맨드), `orca`(멀티에이전트 오케스트레이션, 일부 vendored).
+번들: `web`(React/Next 프론트엔드 팀 컨벤션 스킬), `hk`(개인 커맨드 + 훅), `orca`(멀티에이전트 오케스트레이션).
 
 ## 핵심 아키텍처 — SSOT → 파생 파일
 
@@ -56,15 +56,12 @@ plugins/<bundle>/
   skills/<skill>/SKILL.md           # 스킬 본체 (SSOT: frontmatter name/description)
   skills/<skill>/references/*.md    # 스킬 보조 문서 (선택)
   commands/**/*.md                  # 슬래시 커맨드 (hk 번들) — 스킬 아님
-  hooks/hooks.json                  # 플러그인 제공 훅 (orca 번들)
-  NOTICE.md                         # vendored 스킬 출처 고지 (orca 번들)
+  hooks/hooks.json                  # 플러그인 제공 훅 (hk·orca 번들)
 ```
 
-- **스킬로 카운트되는 조건**: 디렉터리 안에 `SKILL.md`가 있어야 한다. `.gitkeep`만 있는 placeholder 디렉터리는 스킬로 세지 않는다 (`rn`이 이 상태).
+- **스킬로 카운트되는 조건**: 디렉터리 안에 `SKILL.md`가 있어야 한다. `.gitkeep`만 있는 placeholder 디렉터리는 스킬로 세지 않는다.
 - **커맨드 vs 스킬**: `plugins/hk/commands/**/*.md`는 슬래시 커맨드로, frontmatter가 `description`만 갖는다 (스킬의 `name`/`user-invocable`/`allowed-tools` 없음). 파일 경로가 곧 커맨드명이 된다(`commands/pre-clear/save.md` → `/hk:pre-clear:save`).
 - **스킬 frontmatter 필드**: `name`, `description`(스킬 매칭·인벤토리에 사용), 선택적으로 `user-invocable`, `allowed-tools`, `metadata`.
-- **vendored 스킬**: `orca` 번들의 `orca-cli`·`orchestration`·`computer-use`는 stablyai/orca에서 그대로 가져온 것. `NOTICE.md`에 pinned commit이 기록돼 있고, 재-vendoring은 `npx skills add`로 한다. `GENERATION.md`가 있는 스킬도 외부 생성물이므로 손으로 재작성하지 말 것.
-
 ## 스킬 추가/이름변경/이동 워크플로우
 
 1. `plugins/<bundle>/skills/<new-skill>/SKILL.md`를 만들고 frontmatter `name`을 **디렉터리명과 동일하게** 맞춘다. 스킬명이 전역에서 유일한지 확인.
