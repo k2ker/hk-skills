@@ -1,7 +1,7 @@
 ---
 name: orca-workers
-description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), cross-model Codex review, fix loop, and integration landing (commit → verify → Playwright → push → cleanup). Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
-version: 0.2.1
+description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), cross-model review (Claude↔Codex either direction, or Claude-only cross-session), fix loop, and integration landing (commit → verify → Playwright → push → cleanup). Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
+version: 0.2.2
 author: hk
 license: MIT
 platforms: [macos, linux]
@@ -28,7 +28,12 @@ metadata:
 
 - **supervised 고정 (full handoff 아님).** 워커는 항상 `task-create` + `dispatch --inject`로 띄운다(provenance) — **완료·검증 authority는 리드가 소유**(ownership 이전 아님). Workflow(이 하니스의 병렬 subagent 오케스트레이션 도구)/subagent로 워커 완료를 대체하지 마라. Workflow는 큰 표면의 P1 스카우트·P6 준비도 분석(read-only)에만.
 - **분해·토폴로지는 리드의 선택 — N-way 병렬이 기본 아님.** 팬아웃 전 **의존 방향**을 보고 *최고 결과*가 나오는 구조를 고른다(병렬 최대화가 목표 아님): ① 파일 disjoint + 계약 독립 → **병렬**. ② **강한 단방향 의존**(db 도메인·repo·계약 → 기능 → ui) → **웨이브**: wave1 db/계약 확정(별 워크트리) → wave2 기능·ui·통합 병렬(각자 워크트리). 웨이브 안 나누면 다운스트림이 계약을 *가정*만 하다 합류 때 **DTO 드리프트**를 리드가 수습. ③ 소규모(스칼라 CRUD 몇 화면) → **순차 1명**이 더 빠르고 안전. **병렬 이득 > 정합 리스크일 때만 팬아웃.**
-- **모델·에포트 고정.** 워커·리드 = **Claude Opus 4.8, max effort**. 교차리뷰어 = **Codex 5.5 (`model_reasoning_effort=xhigh`)** — 저자와 다른 모델이라야 교차가 의미 있음. **Codex 없으면 신규 Claude 세션**(별 컨텍스트 = 독립 관점)으로 교차.
+- **모델 역할 배정 = 사용자 지정 (없으면 기본 A) · 교차는 불변.** 누가 구현하고 누가 리뷰할지는 **사용자가 정한다** — 안 정했으면 **기본 A**. **불변식: 저자 ≠ 리뷰어** — 모델이 다르거나(교차모델), 최소한 별 세션·별 컨텍스트(교차세션)여야 교차가 의미. 세 모드:
+  - **A. Claude 구현 → Codex 리뷰** (기본): Claude Opus 워커 → Codex 리뷰어.
+  - **B. Codex 구현 → Claude 리뷰** (역방향): Codex 워커는 반드시 `network_access=true`로 기동(P3·함정) → 신규 Claude 세션이 리뷰.
+  - **C. Claude 전용** (Codex 미사용/불가): 구현·리뷰 모두 Claude지만 **반드시 별 세션·별 컨텍스트**(교차모델은 포기, 교차세션=독립 관점은 유지). 교차모델보다 약하니 가능하면 A/B 우선.
+  에포트는 어느 모드든 고정: 워커·리드 = **max**, Codex = **`model_reasoning_effort=xhigh`**.
+  **모드 선택 = 가용성 먼저, 그다음 사용자 지정.** 팬아웃 전 Codex 설치·가용 여부를 확인한다(`command -v codex`, 또는 orca가 `--agent codex`를 받는지). **Codex 없으면 무조건 C**(Claude 전용·교차세션 — 사용자가 B를 원해도 Codex가 없으면 C). Codex 있으면 **사용자가 정한 대로**: "Codex가 짜"→B, "Claude가 짜"→A. **사용자가 안 정했으면 기본 A**(Claude 구현→Codex 리뷰). **리드가 임의로 구현 모델을 B로 바꾸지 마라** — 누가 짤지는 사용자 결정.
 - **블로킹 대기 절대 금지 (알림 자동).** `worker_done`·백그라운드 태스크 완료는 **자동 알림**으로 온다 → dispatch·백그라운드 실행 후엔 **알림에 반응만** 해라. **`orca orchestration check --wait`는 실행하지 마라** — 어떤 `--wait`/sleep/파일 폴링 루프도 금지(orchestration 스킬이 권장해도 **오버라이드**; 위 ⚠️). 인박스 확인이 필요하면 `check`(non-`--wait`)로 드레인만.
 - **리드 재검증.** `worker_done` "PASS"는 환경차로 가짜일 수 있다 → 리드가 diff + typecheck/lint/test/build를 재대조(백그라운드 태스크로 돌리고 완료 알림에 반응). Codex `verdict`·findings도 리드가 실파일로 실측 대조(오탐 거름).
 - **커밋/푸시/배포·운영 DB·infra = 승인 없이 금지**(프로젝트 `CLAUDE.md` 가드레일).
@@ -41,9 +46,9 @@ metadata:
 
 **P2 브리프** — 워커별 `.hk/handoff/<task>.md` **파일**(터미널 장문 붙여넣기 금지 — 이스케이프·잘림). 필수: 역할("너는 X만") · 구현 전 로드 목록 · 스코프 IN/**OUT** · DS 규약(프리미티브 조립·재구현 금지) · 앱 규약(문자열 언어·클라 DB직접 금지·a11y) · 검증 명령 + **커밋 금지** · **`worker_done` 보고 문구 = "worker_done 전송, 실패 시 1회 재시도, 그래도 실패면 생략 — 성공 여부와 무관하게 최종 텍스트로 완료 보고 출력 후 턴 종료"**(이중 보고; "정확히 한 번만 보내라"로 쓰면 전송 실패 시 재시도 없이 포기하는 사고). **파일 disjoint로 스코프를 갈라** 워커끼리 안 겹치게. 공유 계약(DTO)이 있으면 양쪽 브리프에 **동일 shape** 명시.
 
-**P3 디스패치** — `read` + `terminal wait --for tui-idle`로 **idle 확정**(satisfied:true + blockedReason 없음) → `task-create` → `dispatch --inject` → **자동 알림에 반응**(블로킹 대기 없음). **codex 워커(구현·supervised)는 반드시 `-c sandbox_workspace_write.network_access=true`로 기동** — 없으면 기본 workspace-write 샌드박스가 orchestration RPC 채널을 막아(`orca status`만 되고 `orca orchestration *`는 `runtime_unavailable`) `worker_done`·`ask` 불가. **`dispatch --inject`도 첫 프롬프트를 삼킨다** — TUI에 다이얼로그(아래 함정)가 떠 있으면 inject가 유실되므로 위 tui-idle 확정 후 inject. 워커가 보고 없이 종료(터미널 exit)하면 리드가 즉시 산출물 직접 수확·검증(코드는 됐는데 self-verify/보고만 못 한 경우 흔함).
+**P3 디스패치** — `read` + `terminal wait --for tui-idle`로 **idle 확정**(satisfied:true + blockedReason 없음) → `task-create` → `dispatch --inject` → **자동 알림에 반응**(블로킹 대기 없음). **codex 워커(구현·supervised, 모드 B)는 반드시 `-c sandbox_workspace_write.network_access=true`로 기동** — 없으면 기본 workspace-write 샌드박스가 orchestration RPC 채널을 막아(`orca status`만 되고 `orca orchestration *`는 `runtime_unavailable`) `worker_done`·`ask` 불가. **`dispatch --inject`도 첫 프롬프트를 삼킨다** — TUI에 다이얼로그(아래 함정)가 떠 있으면 inject가 유실되므로 위 tui-idle 확정 후 inject. 워커가 보고 없이 종료(터미널 exit)하면 리드가 즉시 산출물 직접 수확·검증(코드는 됐는데 self-verify/보고만 못 한 경우 흔함).
 
-**P4 교차리뷰(교차모델·별세션)** — 저자 ≠ 리뷰어(**모델·세션 둘 다**). 리뷰는 **저자 워크트리의 위임 세션**이 한다 — **리드 셸에서 `codex exec` 직접 금지**(인라인의 실수), **interactive `codex`+`send`도 지양**(MCP 스타트업이 첫 프롬프트를 삼킴). 정석 = **orca 터미널에서 `codex exec`**(프롬프트를 arg로): `orca terminal create --worktree <저자 wt> --command 'codex exec … "브리프 .hk/review/<task>-brief.md 읽고 .hk/review/<task>-codex.md에 정적 리뷰만 써라"'` — arg 전달이라 첫-프롬프트-유실 회피 + 위임 세션 유지 + 끝나면 exit(완료 신호). 미커밋 diff를 봐야 하니 **저자 워크트리 in-place**(새 워크트리엔 미커밋 안 보임) — 리뷰어는 **읽기전용**(소스·빌드·테스트·설치·네트워크 금지)이라 'P0 워크트리당 워커 1개'의 **유일한 예외**(변경 안 하니 안 얽힘). 브리프 = 대상 `git diff` + 신규파일 목록 · 합격기준 · **"정적 리뷰만"** · 산출 `.hk/review/<task>-codex.md`(blocker/major/minor/nit + `file:line` + 끝줄 `SUMMARY … verdict CLEAN|NEEDS_FIX`). **리드가 파일로 수확**(리뷰어는 read-only라 `network_access` 플래그 없이 기동 → `orca` orchestration RPC 차단; 그래서 파일 수확이 정석). Codex 불가 시 **신규 Claude 세션**으로 동일하게.
+**P4 교차리뷰(교차모델·별세션)** — 저자 ≠ 리뷰어(**모델·세션 둘 다**). **리뷰어 모델 = 고른 모드**(A→Codex, B/C→신규 Claude 세션; B는 교차모델, C는 교차세션만). 아래 `codex exec` 정석은 **리뷰어=Codex**용 — **리뷰어=Claude면** 저자 워크트리에 **신규 claude 터미널 + 동일 브리프 파일**로 같은 산출(`.hk/review/<task>-*.md`)을 낸다. 리뷰는 **저자 워크트리의 위임 세션**이 한다 — **리드 셸에서 `codex exec` 직접 금지**(인라인의 실수), **interactive `codex`+`send`도 지양**(MCP 스타트업이 첫 프롬프트를 삼킴). 정석 = **orca 터미널에서 `codex exec`**(프롬프트를 arg로): `orca terminal create --worktree <저자 wt> --command 'codex exec … "브리프 .hk/review/<task>-brief.md 읽고 .hk/review/<task>-codex.md에 정적 리뷰만 써라"'` — arg 전달이라 첫-프롬프트-유실 회피 + 위임 세션 유지 + 끝나면 exit(완료 신호). 미커밋 diff를 봐야 하니 **저자 워크트리 in-place**(새 워크트리엔 미커밋 안 보임) — 리뷰어는 **읽기전용**(소스·빌드·테스트·설치·네트워크 금지)이라 'P0 워크트리당 워커 1개'의 **유일한 예외**(변경 안 하니 안 얽힘). 브리프 = 대상 `git diff` + 신규파일 목록 · 합격기준 · **"정적 리뷰만"** · 산출 `.hk/review/<task>-codex.md`(blocker/major/minor/nit + `file:line` + 끝줄 `SUMMARY … verdict CLEAN|NEEDS_FIX`). **리드가 파일로 수확**(리뷰어는 read-only라 `network_access` 플래그 없이 기동 → `orca` orchestration RPC 차단; 그래서 파일 수확이 정석). Codex 불가 시 **신규 Claude 세션**으로 동일하게.
 
 **P5 수정 루프** — findings를 리드가 실측 대조 → 확정분 `.hk/fix/<task>-fixes.md` → **같은 워커 재engage(재투입)** → 리드 재검증. `verdict CLEAN`까지. 수정이 **리뷰어 제안 remedy 그대로인 trivial 건**은 리드 실측 확인으로 갈음(리뷰어 재핑 생략) — 단 **정직 고지**.
 
