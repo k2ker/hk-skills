@@ -1,5 +1,15 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"[스킬 확인] 착수 전, 이 작업에 맞는 사용 가능한 스킬이 있으면 Skill 도구로 먼저 로드해 컨벤션을 대조하라(기억/습관으로 바로 구현 금지).\"}}'"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
