@@ -1,7 +1,7 @@
 ---
 name: orca-workers
 description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), cross-model Codex review, fix loop, and integration landing (commit → verify → Playwright → push → cleanup). Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
-version: 0.2.0
+version: 0.2.1
 author: hk
 license: MIT
 platforms: [macos, linux]
@@ -13,16 +13,16 @@ metadata:
 
 # Orca 서브워크트리 병렬 오케스트레이션
 
-한 작업을 **여러 Orca 서브워크트리 워커에 병렬 분담**하고, 리드(이 세션)가 **supervised로** 브리프·디스패치·교차리뷰·수정·통합을 조율할 때 쓴다. 명령·플래그 정본은 아래 두 스킬이고, 이 파일은 **우리 워크플로 + 실전 함정**만 담는다.
+한 작업을 **여러 Orca 서브워크트리 워커에 병렬 분담**하고, 리드(이 세션)가 **supervised로** 브리프·디스패치·교차리뷰·수정·통합을 조율할 때 쓴다. 명령·플래그 정본은 **Orca가 제공하는** 아래 두 스킬이고, 이 파일은 **우리 워크플로 + 실전 함정**만 담는다.
 
 ## 먼저 로드 (필수 · 스킵 금지)
 
-디스패치 전에 **둘 다** 연다. 기억/습관으로 실행하지 마라 — 그게 매 사고의 원인이었다. 둘 다 이 `orca` 번들에 함께 들어있다(standalone — 로컬 설치 불필요).
+디스패치 전에 **둘 다** 이름으로 로드한다. 기억/습관으로 실행하지 마라 — 그게 매 사고의 원인이었다. 이 둘은 **이 번들이 vendor하는 게 아니라 Orca가 제공하는 스킬**이다 — Orca 앱이 사용자 레벨에 깔아두므로, Orca 환경 세션이면 스킬 인벤토리에 **이미 떠 있다**. **경로를 하드코딩하지 말고 인벤토리에서 이름으로 로드**하라(설치 위치는 머신·버전마다 다름). 인벤토리에 이 둘이 없으면 Orca-프로비저닝 환경이 아니라는 신호 → 이 레시피를 진행하지 마라.
 
-- **`orca-cli`** — worktree / terminal / read / send.
-- **`orchestration`** — `task-create` → `dispatch --inject` → `worker_done`.
+- **`orca-cli`**(Orca 제공) — worktree / terminal / read / send.
+- **`orchestration`**(Orca 제공) — `task-create` → `dispatch --inject` → `worker_done`.
 
-> ⚠️ **오버라이드 (이 레시피가 orchestration 스킬을 이깁니다).** `orchestration` 스킬은 `check --wait`(롤링 대기)를 여러 번 권장한다(line 94·225·246·251 + 예시 명령). **이 환경에선 전부 무시한다** — `worker_done`·백그라운드 완료가 **자동 알림**으로 오므로 대기 명령 자체가 불필요·유해. **`orca orchestration check --wait`를 어떤 timeout으로도 실행하지 마라.** 그 스킬의 명령 문법(task-create/dispatch/reply)만 빌리고, `--wait`는 버린다.
+> ⚠️ **오버라이드 (이 레시피가 orchestration 스킬을 이깁니다).** `orchestration` 스킬은 `check --wait`(롤링 대기)를 여러 곳에서 권장한다(supervision 지침·예시 명령 등). **이 환경에선 전부 무시한다** — `worker_done`·백그라운드 완료가 **자동 알림**으로 오므로 대기 명령 자체가 불필요·유해. **`orca orchestration check --wait`를 어떤 timeout으로도 실행하지 마라.** 그 스킬의 명령 문법(task-create/dispatch/reply)만 빌리고, `--wait`는 버린다.
 
 ## 핵심 원칙
 
