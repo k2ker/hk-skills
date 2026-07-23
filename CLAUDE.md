@@ -19,8 +19,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **파생 (절대 손대지 말 것 — `sync-marketplace.mjs`가 재생성):**
 - `.claude-plugin/marketplace.json` 의 `plugins[]` (상위 `name`/`owner`는 보존)
 - `README.md` 의 번들 표 — `<!-- BUNDLES:START ... -->` / `<!-- BUNDLES:END -->` 마커 사이
-- `SKILLS.md` 전체 — 스킬 인벤토리
-
 즉 번들 설명을 바꾸려면 표가 아니라 `plugin.json`의 `description`을, 스킬 설명은 `SKILL.md`의 frontmatter를 고친다.
 
 ## 커밋 시 자동 동기화 + 구조 검증

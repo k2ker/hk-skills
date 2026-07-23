@@ -7,7 +7,6 @@
 // 파생(이 스크립트가 재생성):
 //   - .claude-plugin/marketplace.json  ← plugins[] name/source/description
 //   - README.md                        ← 번들 표(마커 사이)
-//   - SKILLS.md                        ← 전체 스킬 인벤토리
 //
 // 사용:
 //   node scripts/sync-marketplace.mjs         # check: 드리프트/위반이면 exit 1 (파일 변경 안 함)
@@ -23,7 +22,6 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PLUGINS_DIR = path.join(ROOT, 'plugins');
 const MARKETPLACE = path.join(ROOT, '.claude-plugin', 'marketplace.json');
 const README = path.join(ROOT, 'README.md');
-const SKILLS_MD = path.join(ROOT, 'SKILLS.md');
 const README_START = '<!-- BUNDLES:START (auto: scripts/sync-marketplace.mjs) -->';
 const README_END = '<!-- BUNDLES:END -->';
 
@@ -169,25 +167,6 @@ if (startIdx === -1 || endIdx === -1) {
   readmeOut = readme.slice(0, startIdx) + tableBlock + readme.slice(endIdx + README_END.length);
 }
 
-// SKILLS.md 인벤토리
-const total = bundles.reduce((s, b) => s + b.skills.length, 0);
-const inv = [
-  '# hk-skills — 스킬 인벤토리',
-  '',
-  `> 자동 생성: \`scripts/sync-marketplace.mjs\`. 직접 수정하지 말 것. 총 ${total}개 스킬 / ${bundles.length}개 번들.`,
-  '',
-];
-for (const b of orderedBundles.map((n) => bundles.find((x) => x.name === n))) {
-  inv.push(`## ${b.name} (${b.skills.length})`, '');
-  if (b.skills.length === 0) inv.push('_아직 스킬 없음(placeholder)._', '');
-  for (const s of b.skills) {
-    const short = s.desc ? (s.desc.length > 160 ? s.desc.slice(0, 157).trimEnd() + '…' : s.desc) : '(설명 없음)';
-    inv.push(`- \`${s.name}\` — ${short}`);
-  }
-  inv.push('');
-}
-const skillsOut = inv.join('\n').replace(/\n+$/, '\n');
-
 // ---- 3. 이전 커밋 대비 추가/수정/삭제 리포트 --------------------------------
 const skillOf = (p) => {
   const m = p.match(/^plugins\/([^/]+)\/skills\/([^/]+)\/SKILL\.md$/);
@@ -211,7 +190,6 @@ if (headList != null) {
 const files = [
   { path: MARKETPLACE, next: marketplaceOut },
   { path: README, next: readmeOut },
-  { path: SKILLS_MD, next: skillsOut },
 ];
 const drifted = [];
 for (const f of files) {
@@ -245,7 +223,7 @@ if (errors.length) {
 }
 
 if (drifted.length === 0) {
-  console.log('\n파생 파일 동기화 상태 OK (marketplace.json / README.md / SKILLS.md).');
+  console.log('\n파생 파일 동기화 상태 OK (marketplace.json / README.md).');
   process.exit(0);
 }
 

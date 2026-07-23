@@ -7,13 +7,13 @@
 <!-- BUNDLES:START (auto: scripts/sync-marketplace.mjs) -->
 | 번들(플러그인) | 스킬 수 | 설명 |
 |---|---|---|
-| `web` | 6 | Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy. |
+| `web` | 6 | Web frontend (React/Next) 팀 컨벤션 스킬: 컴포넌트·Context·Next.js App Router·Tailwind·TanStack Query 패턴 + client/server API-only 경계(브라우저 DB 직접접근·secret 노출 차단). |
 | `rn` | 0 | React Native / Expo mobile. (Placeholder — 아직 스킬 없음. RN 프로젝트 시작 시 skills/에 추가.) |
 | `hk` | 0 | hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md). |
-| `orca` | 1 | Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Bundles the official `orca-cli`, `orchestration` & `computer-use` skills (vendored verbatim from stablyai/orca, MIT — see NOTICE.md) so it needs no locally-installed Orca skills. |
+| `orca` | 1 | Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Command mechanics delegate to Orca's own orca-cli/orchestration skills. |
 <!-- BUNDLES:END -->
 
-번들 표 · `marketplace.json` 설명 · `SKILLS.md` 인벤토리는 **커밋 훅이 자동 동기화**한다(수동 편집 금지). 원본은 파일시스템 + 각 `plugin.json`. 전체 스킬 목록은 [SKILLS.md](SKILLS.md).
+번들 표 · `marketplace.json` 설명은 **커밋 훅이 자동 동기화**한다(수동 편집 금지). 원본은 파일시스템 + 각 `plugin.json`. 스킬 상세는 각 `plugins/<번들>/skills/<스킬>/SKILL.md`.
 
 프로젝트 계약 스킬(특정 repo 구조에 종속)은 여기 없고 각 프로젝트 `.claude/skills/`에 둔다.
 
@@ -32,9 +32,8 @@
     }
   },
   "enabledPlugins": {
-    "common@hk-skills": true,
     "web@hk-skills": true,
-    "supabase@hk-skills": true
+    "hk@hk-skills": true
   }
 }
 ```
@@ -70,10 +69,10 @@ skills:
 
 ## 스택별 조합 예
 
-- 웹(Next/Vite)+Supabase: `common web supabase`
-- 순수 웹: `common web`
-- React Native: `common rn`
-- 백엔드/DB만: `common supabase`
+- 웹(React/Next): `web`
+- 웹 + 개인 커맨드/훅: `web hk`
+- React Native: `rn` (placeholder — 아직 스킬 없음)
+- 멀티에이전트 오케스트레이션: `orca`
 
 ## 업데이트
 
@@ -82,7 +81,7 @@ skills:
 
 ## 커밋 훅 (파생 파일 자동 동기화)
 
-스킬을 추가/삭제/이동하면 `README.md` 번들 표·`marketplace.json` 설명·`SKILLS.md` 인벤토리가 어긋난다. 이를 커밋 시 자동으로 맞추는 pre-commit 훅이 있다.
+스킬을 추가/삭제/이동하면 `README.md` 번들 표·`marketplace.json` 설명이 어긋난다. 이를 커밋 시 자동으로 맞추는 pre-commit 훅이 있다.
 
 ```bash
 git config core.hooksPath .githooks   # 클론마다 1회

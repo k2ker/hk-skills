@@ -1,7 +1,7 @@
 {
   "name": "web",
-  "description": "Web frontend (React/Next/Vite): design, Tailwind, UI/UX, Framer Motion, React best-practices/composition, shadcn, Storybook, Playwright, TanStack (Query/Form/Table), Turborepo, Vercel deploy, API-only client/server boundary, frontend state policy.",
-  "version": "0.1.0",
+  "description": "Web frontend (React/Next) 팀 컨벤션 스킬: 컴포넌트·Context·Next.js App Router·Tailwind·TanStack Query 패턴 + client/server API-only 경계(브라우저 DB 직접접근·secret 노출 차단).",
+  "version": "0.2.0",
   "author": {
     "name": "hk"
   }
