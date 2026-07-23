@@ -1,7 +1,7 @@
 ---
 name: orca-workers
 description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), cross-model Codex review, fix loop, and integration landing (commit → verify → Playwright → push → cleanup). Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
-version: 0.1.0
+version: 0.2.0
 author: hk
 license: MIT
 platforms: [macos, linux]
@@ -39,11 +39,11 @@ metadata:
 
 **P1 파악** — 리드가 실파일로 계약/표면/스코프를 확정(브리프 정확도). 표면이 크면 Workflow read-only 스카우트 후 리드가 재대조. (자주: 데이터/서버 계층이 이미 있어 스코프가 UI-only로 줄기도 함 — 실제로 열어 확인.)
 
-**P2 브리프** — 워커별 `.hk/handoff/<task>.md` **파일**(터미널 장문 붙여넣기 금지 — 이스케이프·잘림). 필수: 역할("너는 X만") · 구현 전 로드 목록 · 스코프 IN/**OUT** · DS 규약(프리미티브 조립·재구현 금지) · 앱 규약(문자열 언어·클라 DB직접 금지·a11y) · 검증 명령 + **커밋 금지** · `worker_done` 보고. **파일 disjoint로 스코프를 갈라** 워커끼리 안 겹치게. 공유 계약(DTO)이 있으면 양쪽 브리프에 **동일 shape** 명시.
+**P2 브리프** — 워커별 `.hk/handoff/<task>.md` **파일**(터미널 장문 붙여넣기 금지 — 이스케이프·잘림). 필수: 역할("너는 X만") · 구현 전 로드 목록 · 스코프 IN/**OUT** · DS 규약(프리미티브 조립·재구현 금지) · 앱 규약(문자열 언어·클라 DB직접 금지·a11y) · 검증 명령 + **커밋 금지** · **`worker_done` 보고 문구 = "worker_done 전송, 실패 시 1회 재시도, 그래도 실패면 생략 — 성공 여부와 무관하게 최종 텍스트로 완료 보고 출력 후 턴 종료"**(이중 보고; "정확히 한 번만 보내라"로 쓰면 전송 실패 시 재시도 없이 포기하는 사고). **파일 disjoint로 스코프를 갈라** 워커끼리 안 겹치게. 공유 계약(DTO)이 있으면 양쪽 브리프에 **동일 shape** 명시.
 
-**P3 디스패치** — `read`로 idle 확인 → `task-create` → `dispatch --inject` → **자동 알림에 반응**(블로킹 대기 없음). 워커가 보고 없이 종료(터미널 exit)하면 리드가 즉시 산출물 직접 수확·검증(코드는 됐는데 self-verify/보고만 못 한 경우 흔함).
+**P3 디스패치** — `read` + `terminal wait --for tui-idle`로 **idle 확정**(satisfied:true + blockedReason 없음) → `task-create` → `dispatch --inject` → **자동 알림에 반응**(블로킹 대기 없음). **codex 워커(구현·supervised)는 반드시 `-c sandbox_workspace_write.network_access=true`로 기동** — 없으면 기본 workspace-write 샌드박스가 orchestration RPC 채널을 막아(`orca status`만 되고 `orca orchestration *`는 `runtime_unavailable`) `worker_done`·`ask` 불가. **`dispatch --inject`도 첫 프롬프트를 삼킨다** — TUI에 다이얼로그(아래 함정)가 떠 있으면 inject가 유실되므로 위 tui-idle 확정 후 inject. 워커가 보고 없이 종료(터미널 exit)하면 리드가 즉시 산출물 직접 수확·검증(코드는 됐는데 self-verify/보고만 못 한 경우 흔함).
 
-**P4 교차리뷰(교차모델·별세션)** — 저자 ≠ 리뷰어(**모델·세션 둘 다**). 리뷰는 **저자 워크트리의 위임 세션**이 한다 — **리드 셸에서 `codex exec` 직접 금지**(인라인의 실수), **interactive `codex`+`send`도 지양**(MCP 스타트업이 첫 프롬프트를 삼킴). 정석 = **orca 터미널에서 `codex exec`**(프롬프트를 arg로): `orca terminal create --worktree <저자 wt> --command 'codex exec … "브리프 .hk/review/<task>-brief.md 읽고 .hk/review/<task>-codex.md에 정적 리뷰만 써라"'` — arg 전달이라 첫-프롬프트-유실 회피 + 위임 세션 유지 + 끝나면 exit(완료 신호). 미커밋 diff를 봐야 하니 **저자 워크트리 in-place**(새 워크트리엔 미커밋 안 보임) — 리뷰어는 **읽기전용**(소스·빌드·테스트·설치·네트워크 금지)이라 'P0 워크트리당 워커 1개'의 **유일한 예외**(변경 안 하니 안 얽힘). 브리프 = 대상 `git diff` + 신규파일 목록 · 합격기준 · **"정적 리뷰만"** · 산출 `.hk/review/<task>-codex.md`(blocker/major/minor/nit + `file:line` + 끝줄 `SUMMARY … verdict CLEAN|NEEDS_FIX`). **리드가 파일로 수확**(리뷰어는 `orca` 못 부름). Codex 불가 시 **신규 Claude 세션**으로 동일하게.
+**P4 교차리뷰(교차모델·별세션)** — 저자 ≠ 리뷰어(**모델·세션 둘 다**). 리뷰는 **저자 워크트리의 위임 세션**이 한다 — **리드 셸에서 `codex exec` 직접 금지**(인라인의 실수), **interactive `codex`+`send`도 지양**(MCP 스타트업이 첫 프롬프트를 삼킴). 정석 = **orca 터미널에서 `codex exec`**(프롬프트를 arg로): `orca terminal create --worktree <저자 wt> --command 'codex exec … "브리프 .hk/review/<task>-brief.md 읽고 .hk/review/<task>-codex.md에 정적 리뷰만 써라"'` — arg 전달이라 첫-프롬프트-유실 회피 + 위임 세션 유지 + 끝나면 exit(완료 신호). 미커밋 diff를 봐야 하니 **저자 워크트리 in-place**(새 워크트리엔 미커밋 안 보임) — 리뷰어는 **읽기전용**(소스·빌드·테스트·설치·네트워크 금지)이라 'P0 워크트리당 워커 1개'의 **유일한 예외**(변경 안 하니 안 얽힘). 브리프 = 대상 `git diff` + 신규파일 목록 · 합격기준 · **"정적 리뷰만"** · 산출 `.hk/review/<task>-codex.md`(blocker/major/minor/nit + `file:line` + 끝줄 `SUMMARY … verdict CLEAN|NEEDS_FIX`). **리드가 파일로 수확**(리뷰어는 read-only라 `network_access` 플래그 없이 기동 → `orca` orchestration RPC 차단; 그래서 파일 수확이 정석). Codex 불가 시 **신규 Claude 세션**으로 동일하게.
 
 **P5 수정 루프** — findings를 리드가 실측 대조 → 확정분 `.hk/fix/<task>-fixes.md` → **같은 워커 재engage(재투입)** → 리드 재검증. `verdict CLEAN`까지. 수정이 **리뷰어 제안 remedy 그대로인 trivial 건**은 리드 실측 확인으로 갈음(리뷰어 재핑 생략) — 단 **정직 고지**.
 
@@ -60,5 +60,10 @@ metadata:
 - **`pnpm install`이 `pnpm-workspace.yaml` 오염**(pnpm11 placeholder 주입) → 커밋 전 `git checkout -- pnpm-workspace.yaml`.
 - **env 위치**: Next admin은 **`apps/admin/.env`**에서 읽는다(모노레포 루트 아님 — 루트에 두면 앱이 못 봄). 통합 워크트리 Playwright엔 `.env` 복사. 최소 키 `DATABASE_URL`·`RECALL_SESSION_SECRET`(없으면 login·/api/me **503**)·`NEXT_PUBLIC_API_BASE_URL`(없으면 클라가 운영 도메인 호출 → 로컬 `ERR_NAME_NOT_RESOLVED`).
 - **Codex 리뷰어**: **orca 터미널에서 `codex exec`**(프롬프트를 arg로) — `--command 'codex exec --dangerously-bypass-approvals-and-sandbox --model gpt-5.5 -c model_reasoning_effort="xhigh" "<브리프 읽고 리뷰 파일 써라>"'`. **리드 셸에서 직접 `codex exec` 금지**(위임 아님). interactive `codex`+`send`로 가면 **MCP 스타트업이 첫 프롬프트를 삼킨다**(composer placeholder=미입력) → `read`로 착수 확인 후 **재전송**. **MCP transport 에러(github/supabase OAuth 실패)는 무해한 노이즈** — Codex 자체는 정상, 리뷰엔 MCP 불필요. 산출은 파일. **Codex 불가 시 신규 Claude 세션** 동일.
+- **TUI 다이얼로그가 첫 프롬프트를 삼킴 (`send`·`dispatch --inject` 공통)** — 전송 전 `terminal wait --for tui-idle`로 **satisfied:true + blockedReason 없음** 확인. 신종 blockedReason 2건: ① **`codex-update-prompt`**(버전 업데이트 다이얼로그) → `"2"`(Skip) 전송으로 해소. ② **codex 0.145+ 훅 승인 다이얼로그**(바로 아래).
+- **codex 0.145+ "N hooks need review" 다이얼로그가 기동을 막음** — Orca가 깔아둔 agent-hooks 중 신규 훅이 있으면 뜬다. `"t"`(trust all) 일괄 승인하면 **타 에이전트용 훅(claude-hook 등)까지 켜져** 도구 호출마다 `PostToolUse hook (failed) exit 127` 스팸(작업엔 무해, 로그 오염) → **필요한 훅만 승인**. (MCP transport 에러와 같은 무해 노이즈 부류.)
+- **프롬프트 유실 후 재주입** — task가 `dispatched`면 `dispatch --inject` 재실행 불가(`already has an active dispatch`), `task-update --status ready`로도 안 풀림(pane에 active dispatch 잔존). 복구 = 기존 **taskId/dispatchId를 명시한 preamble**을 `terminal send`로 수동 재전송(pane의 dispatch 컨텍스트는 유효 → `worker_done` 인정), task 상태는 `task-update`로 `dispatched` 복귀.
+- **`orca terminal wait --for exit` 불신뢰 (codex exec 터미널)** — ① `terminal_handle_stale`로 즉사 ② 이미 exit(셸 프롬프트 복귀)했는데 안 풀리고 무기한 대기. **exec 워커 완료 감지를 `wait --for exit`에 의존 마라** — `worker_done` 경로가 정답(위 `network_access` 플래그 전제).
+- **터미널 title 매칭 금지** — Orca가 탭 제목을 세션 내용 기반으로 자동 변경(예: `codex-p5b` → `⠸ survey`). 식별은 **handle로만**; title 기반 grep/필터는 오탐("terminal gone" 오판 사고).
 - **`send` 전 `read`** — 워커 thinking 중 입력이 꼬인다.
 - **`orca worktree rm`은 브랜치도 함께 제거** — 이후 `git branch -D`는 "not found".
