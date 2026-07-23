@@ -34,24 +34,24 @@ node scripts/sync-marketplace.mjs --fix
 | orca | orchestration | `stablyai/orca` | 공식 | NOTICE `e3721e8` |
 | supabase | supabase | `supabase/agent-skills` | 공식 | — |
 | supabase | supabase-postgres-best-practices | `supabase/agent-skills` | 공식 | — |
-| web | deploy-to-vercel | `vercel-labs/agent-skills` | 공식 | — |
-| web | vercel-cli-with-tokens | `vercel-labs/agent-skills` | 공식 | — |
-| web | vercel-composition-patterns | `vercel-labs/agent-skills` | 공식 | metadata v1.0.0 |
-| web | vercel-react-best-practices | `vercel-labs/agent-skills` | 공식 | metadata v1.0.0 |
-| web | frontend-design | `anthropics/skills` | 공식 | — |
-| web | shadcn | `shadcn-ui/ui` | 공식 | — |
-| web | playwright-cli | `microsoft/playwright-cli` | 공식 | — |
-| web | turborepo | `vercel/turborepo` | 공식 | — |
-| web | vercel-cli | `vercel/vercel` | 공식 | — |
-| web | tanstack-form | `tanstack-skills/tanstack-skills` | 공식 | — |
-| web | tanstack-query | `tanstack-skills/tanstack-skills` | 공식 | — |
-| web | tanstack-table | `tanstack-skills/tanstack-skills` | 공식 | — |
-| web | tanstack-query-best-practices | `DeckardGer/tanstack-agent-skills` | ⚠️ 커뮤니티 | — |
-| web | tailwind-design-system | `wshobson/agents` | ⚠️ 커뮤니티 | — |
-| web | framer-motion-animator | `patricio0312rev/skills` | ⚠️ 커뮤니티 | — |
-| web | playwright-best-practices | `currents-dev/playwright-best-practices-skill` | ⚠️ 커뮤니티 | — |
-| web | storybook | `DaleStudy/skills` | ⚠️ 커뮤니티 | — |
-| web | ui-ux-pro-max | `nextlevelbuilder/ui-ux-pro-max-skill` | ⚠️ 커뮤니티 | — |
+| dev | deploy-to-vercel | `vercel-labs/agent-skills` | 공식 | — |
+| dev | vercel-cli-with-tokens | `vercel-labs/agent-skills` | 공식 | — |
+| dev | vercel-composition-patterns | `vercel-labs/agent-skills` | 공식 | metadata v1.0.0 |
+| dev | vercel-react-best-practices | `vercel-labs/agent-skills` | 공식 | metadata v1.0.0 |
+| dev | frontend-design | `anthropics/skills` | 공식 | — |
+| dev | shadcn | `shadcn-ui/ui` | 공식 | — |
+| dev | playwright-cli | `microsoft/playwright-cli` | 공식 | — |
+| dev | turborepo | `vercel/turborepo` | 공식 | — |
+| dev | vercel-cli | `vercel/vercel` | 공식 | — |
+| dev | tanstack-form | `tanstack-skills/tanstack-skills` | 공식 | — |
+| dev | tanstack-query | `tanstack-skills/tanstack-skills` | 공식 | — |
+| dev | tanstack-table | `tanstack-skills/tanstack-skills` | 공식 | — |
+| dev | tanstack-query-best-practices | `DeckardGer/tanstack-agent-skills` | ⚠️ 커뮤니티 | — |
+| dev | tailwind-design-system | `wshobson/agents` | ⚠️ 커뮤니티 | — |
+| dev | framer-motion-animator | `patricio0312rev/skills` | ⚠️ 커뮤니티 | — |
+| dev | playwright-best-practices | `currents-dev/playwright-best-practices-skill` | ⚠️ 커뮤니티 | — |
+| dev | storybook | `DaleStudy/skills` | ⚠️ 커뮤니티 | — |
+| dev | ui-ux-pro-max | `nextlevelbuilder/ui-ux-pro-max-skill` | ⚠️ 커뮤니티 | — |
 
 ## 일괄 재설치 커맨드 (원본 repo별 묶음)
 

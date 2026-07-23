@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `hk-skills`는 애플리케이션이 아니라 **Claude Code 플러그인 마켓플레이스**다. 스킬(SKILL.md), 슬래시 커맨드, 훅을 번들(플러그인) 단위로 모아 여러 프로젝트/PC에서 공유·중앙관리한다. 런타임 코드도, 빌드도, 의존성도 없다 — 유일한 실행 코드는 파생 파일을 동기화하는 zero-dep node 스크립트 하나다.
 
-번들: `web`(React/Next 프론트엔드 팀 컨벤션 스킬), `hk`(개인 커맨드 + 훅), `orca`(멀티에이전트 오케스트레이션).
+번들: `dev`(React/Next 프론트엔드 팀 컨벤션 스킬), `hk`(개인 커맨드 + 훅), `orca`(멀티에이전트 오케스트레이션).
 
 ## 핵심 아키텍처 — SSOT → 파생 파일
 

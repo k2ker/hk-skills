@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "dev",
   "description": "Web frontend (React/Next) 팀 컨벤션 스킬: 컴포넌트·Context·Next.js App Router·Tailwind·TanStack Query 패턴 + client/server API-only 경계(브라우저 DB 직접접근·secret 노출 차단).",
   "version": "0.2.0",
   "author": {
