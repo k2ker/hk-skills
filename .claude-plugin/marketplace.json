@@ -11,11 +11,6 @@
       "description": "Web frontend (React/Next) 팀 컨벤션 스킬: 컴포넌트·Context·Next.js App Router·Tailwind·TanStack Query 패턴 + client/server API-only 경계(브라우저 DB 직접접근·secret 노출 차단)."
     },
     {
-      "name": "rn",
-      "source": "./plugins/rn",
-      "description": "React Native / Expo mobile. (Placeholder — 아직 스킬 없음. RN 프로젝트 시작 시 skills/에 추가.)"
-    },
-    {
       "name": "hk",
       "source": "./plugins/hk",
       "description": "hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md)."

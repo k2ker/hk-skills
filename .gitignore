@@ -1,0 +1,13 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+*.log
+
+# Claude Code — 개인/머신별 로컬 설정 (커밋 금지, settings.json은 커밋)
+.claude/settings.local.json
