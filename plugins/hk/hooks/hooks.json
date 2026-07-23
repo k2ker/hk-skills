@@ -4,8 +4,8 @@
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/scripts/record-gate-reminder.sh"
+            "type": "prompt",
+            "prompt": "이 세션에서 기록할 만한 실질 작업(기능 구현·조사·주요 의사결정)을 했고, 이 프로젝트가 docs/tech-notes/ 기록 컨벤션을 쓰는데, 아직 docs/tech-notes 나 MEMORY.md 에 그 내용을 남기지 않았다고 판단되면 {\"ok\": false, \"reason\": \"무엇을 docs/tech-notes 에 append 하고 MEMORY.md 를 어떻게 갱신할지 — 기능/조사 단위로\"} 로 답하라. 그 외(기록할 실질 작업 없음 / 이미 기록함 / 단순 대화나 trivial 변경 / 이 프로젝트가 tech-notes 컨벤션을 안 씀)에는 {\"ok\": true} 로 답하라."
           }
         ]
       }
