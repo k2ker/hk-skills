@@ -43,29 +43,12 @@
 
 ## Hermes에서 쓰는 법
 
-Hermes는 Claude plugin marketplace를 직접 설치하지 않고, 이 repo의 plugin bundle 안 `SKILL.md`들을 `skills.external_dirs`로 읽는다. 이 Mac mini에서는 다음 프로필이 `hk-skills`를 외부 skill library로 소비한다:
-
-- `default`
-- `webdev`
-- `klleon`
-- `agoldenwalnut`
-
-각 프로필 config의 핵심 설정:
-
-```yaml
-skills:
-  external_dirs:
-    - /Users/hyeong/.hermes/skill-libraries/core
-    - /Users/hyeong/.hermes/skill-libraries/common
-    - /Users/hyeong/Code/hk-skills/plugins
-```
+Hermes는 마켓플레이스로 install하지 않고, 쓰려는 프로필의 `skills.external_dirs`에 이 repo의 `plugins/` 경로를 추가해 `SKILL.md`들을 직접 읽는다(경로·프로필은 각 머신/환경에 맞게).
 
 운영 원칙:
 
-- `hk-skills`에 들어간 개발 skill은 `npx skills update` 대상이 아니다.
-- 수정은 이 repo에서 `git pull` / edit / validate / `git commit` / `git push`로 관리한다.
-- Hermes 기존 세션은 `/reload-skills` 또는 `/new` 후 최신 skill index를 본다.
-- `wiki`, `family` 프로필에는 개발용 skill noise를 피하기 위해 연결하지 않는다.
+- 여기 들어간 skill은 `npx skills update` 대상이 아니다 — 수정은 이 repo에서 git으로 관리(`git pull` → edit → validate → `git commit` → `git push`).
+- 기존 Hermes 세션은 `/reload-skills`(또는 `/new`)로 최신 skill index를 다시 읽는다.
 
 ## 스택별 조합 예
 
