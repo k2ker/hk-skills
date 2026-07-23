@@ -1,8 +1,0 @@
-{
-  "name": "supabase",
-  "description": "Supabase + Postgres: client/SSR, auth/RLS, migrations, query & schema best-practices.",
-  "version": "0.1.0",
-  "author": {
-    "name": "hk"
-  }
-}

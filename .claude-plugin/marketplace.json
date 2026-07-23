@@ -16,11 +16,6 @@
       "description": "React Native / Expo mobile. (Placeholder — 아직 스킬 없음. RN 프로젝트 시작 시 skills/에 추가.)"
     },
     {
-      "name": "supabase",
-      "source": "./plugins/supabase",
-      "description": "Supabase + Postgres: client/SSR, auth/RLS, migrations, query & schema best-practices."
-    },
-    {
       "name": "hk",
       "source": "./plugins/hk",
       "description": "hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md)."

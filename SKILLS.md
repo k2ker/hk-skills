@@ -1,6 +1,6 @@
 # hk-skills — 스킬 인벤토리
 
-> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 7개 스킬 / 5개 번들.
+> 자동 생성: `scripts/sync-marketplace.mjs`. 직접 수정하지 말 것. 총 7개 스킬 / 4개 번들.
 
 ## web (6)
 
@@ -12,11 +12,6 @@
 - `web-tanstack-query-patterns` — TanStack Query + Axios 팀 컨벤션. Query Key 팩토리, queryOptions, Mutation, 캐시 갱신, Infinite Query, SSR Prefetch, Axios Instance 패턴. API/Query 작성 시 참조.
 
 ## rn (0)
-
-_아직 스킬 없음(placeholder)._
-
-
-## supabase (0)
 
 _아직 스킬 없음(placeholder)._
 
