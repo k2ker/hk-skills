@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -c 'if ((.tool_input.command // \"\") | (contains(\"orca orchestration check\") and contains(\"--wait\"))) then {hookSpecificOutput:{hookEventName:\"PreToolUse\",permissionDecision:\"deny\",permissionDecisionReason:\"check --wait 블로킹 대기 금지 — worker_done·백그라운드 완료는 자동 알림으로 온다. --wait 빼고 진행하라(인박스 확인이 필요하면 non-wait check로 드레인).\"}} else empty end' 2>/dev/null; exit 0"
+            "command": "jq -c 'if ((.tool_input.command // \"\") | test(\"(^|[;&|`(])[[:space:]]*orca[[:space:]]+orchestration[[:space:]]+check[[:space:]][^;&|]*--wait\")) then {hookSpecificOutput:{hookEventName:\"PreToolUse\",permissionDecision:\"deny\",permissionDecisionReason:\"check --wait 블로킹 대기 금지 — worker_done·백그라운드 완료는 자동 알림으로 온다. --wait 빼고 진행하라(인박스 확인이 필요하면 non-wait check로 드레인).\"}} else empty end' 2>/dev/null; exit 0"
           }
         ]
       }
