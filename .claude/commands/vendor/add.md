@@ -14,4 +14,4 @@ description: 외부 스킬을 plugins/vendor/에 넣는다 — skills add로 받
 
 참고:
 - frontmatter `name`은 폴더명과 같아야 한다(다르면 sync가 막음).
-- `orca-cli`·`supabase`·`skill-creator`처럼 **다른 플러그인이 이미 주는 스킬은 넣지 마라**(중복).
+- `orca-cli`·`orchestration`·`computer-use`는 orca-workers가 참조로 처리하니 **안 넣어도 됨**(중복). 그 외 유용한 스킬은 넣어도 됨(내 환경에 이미 있든 말든 상관없음 — 이건 브릿지다).
