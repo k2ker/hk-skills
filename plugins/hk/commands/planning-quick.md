@@ -1,5 +1,5 @@
 ---
-description: 페이지/기능 단위 sub-plan을 4-phase(spec → design → build → summary)로 진입·진행. 매 phase에 프로젝트 SSOT를 강제 재로드하고, 결정은 스테이크 기준으로 나눠 처리한다.
+description: 페이지/기능 단위 sub-plan을 4-phase(spec → design → build → summary)로 진입·진행. 매 phase에 프로젝트 SSOT를 강제 재로드하고, 결정은 중대/사소로 나눠 처리한다.
 argument-hint: "[NN-name] [spec|design|build|summary]"
 ---
 
@@ -35,15 +35,15 @@ phase 진입 직후 의무 행을 **직접 읽고 인용**한다. design의 `.md
 | 공식 docs (breaking change) | context7 / `node_modules/<pkg>` 번들 docs / `/llms.txt` | **design·build** |
 | 기존 인프라 코드 | 관련 `src/lib`·프록시·클라이언트 등 실제 commit 코드 | design·build |
 
-## 결정 규칙 — 스테이크로 나눈다
+## 결정 규칙 — 중대/사소로 나눈다
 
-**하이스테이크** = 방향을 가름 / API·데이터 계약(shape) / 저장·보안·인증 / 핵심 UX 흐름 / 되돌리기 비쌈. **애매하면 하이스테이크로 취급.**
+**중대 결정** = 틀리면 되돌리기 비싼 것 — 방향을 가름 / API·데이터 계약(shape) / 저장·보안·인증 / 핵심 UX 흐름. **애매하면 중대로 취급.**
 
 | 항목 유형 | 처리 |
 |---|---|
 | **사실** — 원본이 명시 | 그대로 기재. 묻지 않음. |
-| **저스테이크 미정** — 관례 명확·되돌리기 쌈 | 잠정 default 채택 + **"잠정" 표시** → seal 때 사용자가 일괄 검토·veto. |
-| **하이스테이크 미정** | 권고가 있어도 **반드시 `AskUserQuestion`** — 권고는 추천 옵션으로 제시, 옵션 묶어 1회. **에이전트가 대신 결정하지 않는다.** |
+| **사소한 미정** — 관례 명확·틀려도 금방 고침 | 잠정 default 채택 + **"잠정" 표시** → seal 때 사용자가 일괄 검토·veto. |
+| **중대한 미정** | 권고가 있어도 **반드시 `AskUserQuestion`** — 권고는 추천 옵션으로 제시, 옵션 묶어 1회. **에이전트가 대신 결정하지 않는다.** |
 
 ## 각 phase — 역할·진입·게이트
 
@@ -56,7 +56,7 @@ phase 진입 직후 의무 행을 **직접 읽고 인용**한다. design의 `.md
 
 - **spec 산출** — Scope(IN/**OUT**) · 출처 인용(line/§) · UI·상호작용·상태·URL↔화면 / **사실 표 · 잠정 default 표 · 결재 항목** / 수용기준. 인접 의존(모달·별 페이지)은 인터페이스만, 본체는 별 sub-plan.
 - **design 산출** — 컴포넌트 트리 / Props·시그니처 / Mock shape / 서버상태·라우팅 상태전이 / 디자인 토큰 / Edge case + 결정 로그 / Acceptance. **코드는 계약 확정에 필요한 핵심 스니펫까지만** — 전체 구현은 build 몫. 정책 컨벤션 100% 반영. frontmatter `source_mockup`·`audit_baseline`.
-- **build 산출** — 코드 + `03-build.md` 작업 로그(단위/파일/검증/이슈). 편집 직전 docs 재확인 + Edit 대상 Read. 단위 분리(컴포넌트→화면→page entry), 큰 단위마다 typecheck. **typecheck/test/build + 시각 확인(dev 서버+브라우저)**, `--no-verify` 금지. **design과 어긋나면 임의 변경 금지** — 결정 로그에 남기고, 하이스테이크면 사용자에게.
+- **build 산출** — 코드 + `03-build.md` 작업 로그(단위/파일/검증/이슈). 편집 직전 docs 재확인 + Edit 대상 Read. 단위 분리(컴포넌트→화면→page entry), 큰 단위마다 typecheck. **typecheck/test/build + 시각 확인(dev 서버+브라우저)**, `--no-verify` 금지. **design과 어긋나면 임의 변경 금지** — 결정 로그에 남기고, 중대하면 사용자에게.
 - **summary 산출** — spec/design 대비 어긋난 점 / follow-up / **공유 SSOT·정책·mockup 정정** / 다음 sub-plan 영향(해당 spec 직접 편집).
 
 ## 마무리 (매 phase)
@@ -70,8 +70,8 @@ phase 진입 직후 의무 행을 **직접 읽고 인용**한다. design의 `.md
 | ❌ | 이유 |
 |---|---|
 | 원본 SSOT 안 읽고 spec | 환각. |
-| **사실**을 `AskUserQuestion`으로 물음 | 시간 낭비 — 묻는 건 하이스테이크 결정만. |
-| **하이스테이크를 default로 조용히 채택** | 에이전트가 사용자 결정을 대신함 — 가장 위험. |
+| **사실**을 `AskUserQuestion`으로 물음 | 시간 낭비 — 묻는 건 중대 결정만. |
+| **중대 결정을 default로 조용히 채택** | 에이전트가 사용자 결정을 대신함 — 가장 위험. |
 | spec 미sealed인데 design / design 미sealed인데 build | 결정 안 된 것 위에 쌓임. |
 | design에서 전체 구현 코드 작성 | phase 경계 붕괴 — design은 계약까지. |
 | docs·mockup 미참조하고 design/build | breaking change·토큰 불일치 → 재작성. |
