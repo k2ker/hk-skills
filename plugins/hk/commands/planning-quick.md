@@ -1,11 +1,11 @@
 ---
-description: 페이지/기능 단위 sub-plan을 4-phase(spec → design → build → summary)로 진입·진행. 매 phase에 프로젝트 SSOT를 강제 재로드해 컨벤션·컨텍스트를 복구한다.
+description: 페이지/기능 단위 sub-plan을 4-phase(spec → design → build → summary)로 진입·진행. 매 phase에 프로젝트 SSOT를 강제 재로드하고, 결정은 스테이크 기준으로 나눠 처리한다.
 argument-hint: "[NN-name] [spec|design|build|summary]"
 ---
 
 # /hk:planning-quick
 
-페이지/기능 하나(sub-plan)를 **4-phase SSOT** — `spec → design → build → summary` — 로 진행한다. 매 phase 진입 전 프로젝트 SSOT를 강제로 다시 읽어, 세션이 넘어가며 잃는 컨벤션·결정을 1턴에 복구한다.
+페이지/기능 하나(sub-plan)를 **4-phase SSOT** — `spec → design → build → summary` — 로 진행한다. 매 phase 진입 전 프로젝트 SSOT를 다시 읽어, 세션이 넘어가며 잃는 컨벤션·결정을 1턴에 복구한다.
 
 ## 전제 (프로젝트마다 다름 — 없으면 처음 발동 시 1회 확인)
 
@@ -23,7 +23,7 @@ argument-hint: "[NN-name] [spec|design|build|summary]"
 
 ## 매 phase 공통 — SSOT 재로드
 
-phase 진입 직후 아래 중 **의무 행을 직접 읽고 인용**한다. design의 `.md` 코드 스니펫도 build에 그대로 반영되므로 "종이 결정이라 안 읽어도 됨"은 **틀림**.
+phase 진입 직후 의무 행을 **직접 읽고 인용**한다. design의 `.md` 스니펫도 build에 그대로 반영되므로 "종이 결정이라 안 읽어도 됨"은 틀림.
 
 | SSOT | 위치 (프로젝트별) | 의무 phase |
 |---|---|---|
@@ -35,26 +35,45 @@ phase 진입 직후 아래 중 **의무 행을 직접 읽고 인용**한다. des
 | 공식 docs (breaking change) | context7 / `node_modules/<pkg>` 번들 docs / `/llms.txt` | **design·build** |
 | 기존 인프라 코드 | 관련 `src/lib`·프록시·클라이언트 등 실제 commit 코드 | design·build |
 
-## 각 phase
+## 결정 규칙 — 스테이크로 나눈다
 
-- **spec** — 원본을 line/§ 그대로 인용. **사실 vs 결정 분리**: 원본 명시=사실 기재 / 원본 미정+권고=기본 채택(default) / 진짜 미정=`AskUserQuestion`(옵션 묶어 1회). 인접 의존(모달·별 페이지)은 인터페이스만, 본체는 별 sub-plan. 산출: Scope·출처·UI·상호작용·상태·URL↔화면·명시/기본채택/미정·수용기준. → `status: sealed`.
-- **design** — spec sealed 후. 위 의무 SSOT(mockup·docs·인프라) 대조 후 산출: 컴포넌트 트리 / Props·시그니처 / Mock shape / 서버상태·라우팅 상태전이 / 디자인 토큰 / Edge case + 결정 로그 / Acceptance. **정책 파일의 컴포넌트·구조 컨벤션 100% 반영.** → `sealed` + frontmatter `source_mockup`·`audit_baseline`.
-- **build** — design sealed 후. 코드 편집 직전 docs 재확인 + Edit 대상 Read. 단위 분리(컴포넌트→화면→page entry), 큰 단위마다 typecheck. **회귀 검증 typecheck/test/build + 시각 확인(dev 서버 + 브라우저)**. pre-commit hook 통과 필수(`--no-verify` 금지). `03-build.md`=작업 로그.
-- **summary** — build 후 회고: spec/design 대비 어긋난 점 / 후속 follow-up / **공유 SSOT·정책·mockup 정정 사항**. 다음 sub-plan에 영향 있으면 그 spec 직접 편집.
+**하이스테이크** = 방향을 가름 / API·데이터 계약(shape) / 저장·보안·인증 / 핵심 UX 흐름 / 되돌리기 비쌈. **애매하면 하이스테이크로 취급.**
+
+| 항목 유형 | 처리 |
+|---|---|
+| **사실** — 원본이 명시 | 그대로 기재. 묻지 않음. |
+| **저스테이크 미정** — 관례 명확·되돌리기 쌈 | 잠정 default 채택 + **"잠정" 표시** → seal 때 사용자가 일괄 검토·veto. |
+| **하이스테이크 미정** | 권고가 있어도 **반드시 `AskUserQuestion`** — 권고는 추천 옵션으로 제시, 옵션 묶어 1회. **에이전트가 대신 결정하지 않는다.** |
+
+## 각 phase — 역할·진입·게이트
+
+| phase | 역할 (한 줄) | 진입 조건 | 종료 게이트 |
+|---|---|---|---|
+| **spec** | **무엇**을 만들지 확정 + 결정 골라내기 | — | **사용자 결재**로 `sealed` (잠정 default 일괄 검토 포함) |
+| **design** | **어떻게**의 **계약**만 — shape·시그니처 (전체 코드 아님) | spec `sealed` | **사용자 검토**로 `sealed` |
+| **build** | 계약대로 **전체 구현** + 회귀검증 | design `sealed` | 검증 GREEN + **커밋 제안(사용자 결재)** |
+| **summary** | 결과를 **상류 SSOT에 되먹임** | build done | 대시보드 ✅ |
+
+- **spec 산출** — Scope(IN/**OUT**) · 출처 인용(line/§) · UI·상호작용·상태·URL↔화면 / **사실 표 · 잠정 default 표 · 결재 항목** / 수용기준. 인접 의존(모달·별 페이지)은 인터페이스만, 본체는 별 sub-plan.
+- **design 산출** — 컴포넌트 트리 / Props·시그니처 / Mock shape / 서버상태·라우팅 상태전이 / 디자인 토큰 / Edge case + 결정 로그 / Acceptance. **코드는 계약 확정에 필요한 핵심 스니펫까지만** — 전체 구현은 build 몫. 정책 컨벤션 100% 반영. frontmatter `source_mockup`·`audit_baseline`.
+- **build 산출** — 코드 + `03-build.md` 작업 로그(단위/파일/검증/이슈). 편집 직전 docs 재확인 + Edit 대상 Read. 단위 분리(컴포넌트→화면→page entry), 큰 단위마다 typecheck. **typecheck/test/build + 시각 확인(dev 서버+브라우저)**, `--no-verify` 금지. **design과 어긋나면 임의 변경 금지** — 결정 로그에 남기고, 하이스테이크면 사용자에게.
+- **summary 산출** — spec/design 대비 어긋난 점 / follow-up / **공유 SSOT·정책·mockup 정정** / 다음 sub-plan 영향(해당 spec 직접 편집).
 
 ## 마무리 (매 phase)
 
 - 대시보드 row 갱신(draft=◆ / sealed·done=✅) + frontmatter `status` 동기.
 - sealed 시 결정 로그에 `YYYY-MM-DD: <한 줄>` append.
-- build 완료 시 커밋 분리 + 커밋 제안(사용자 결재). 4-phase ✅ 시 다음 sub-plan 후보 제시.
+- 4-phase ✅ 시 다음 sub-plan 후보 제시.
 
 ## 즉시 중단 (안티패턴)
 
 | ❌ | 이유 |
 |---|---|
 | 원본 SSOT 안 읽고 spec | 환각. |
-| 명시 사항을 `AskUserQuestion`으로 물음 | 사용자 시간 낭비. |
-| spec 미sealed인데 design | 결정 안 된 것 위에 쌓임. |
+| **사실**을 `AskUserQuestion`으로 물음 | 시간 낭비 — 묻는 건 하이스테이크 결정만. |
+| **하이스테이크를 default로 조용히 채택** | 에이전트가 사용자 결정을 대신함 — 가장 위험. |
+| spec 미sealed인데 design / design 미sealed인데 build | 결정 안 된 것 위에 쌓임. |
+| design에서 전체 구현 코드 작성 | phase 경계 붕괴 — design은 계약까지. |
 | docs·mockup 미참조하고 design/build | breaking change·토큰 불일치 → 재작성. |
 | build `--no-verify` | pre-commit 우회. |
 | 대시보드 갱신 누락 | 다음 세션이 상태 못 봄. |
