@@ -19,6 +19,11 @@
       "name": "orca",
       "source": "./plugins/orca",
       "description": "Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Command mechanics delegate to Orca's own orca-cli/orchestration skills."
+    },
+    {
+      "name": "vendor",
+      "source": "./plugins/vendor",
+      "description": "외부(벤더) 스킬 모음 — 출처·버전(SHA)·라이선스는 VENDORED-SKILLS.md 참고. /vendor:add|update|remove 로 관리."
     }
   ]
 }

@@ -1,0 +1,8 @@
+{
+  "name": "vendor",
+  "description": "외부(벤더) 스킬 모음 — 출처·버전(SHA)·라이선스는 VENDORED-SKILLS.md 참고. /vendor:add|update|remove 로 관리.",
+  "version": "0.1.0",
+  "author": {
+    "name": "hk"
+  }
+}
