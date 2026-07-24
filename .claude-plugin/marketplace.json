@@ -13,7 +13,7 @@
     {
       "name": "hk",
       "source": "./plugins/hk",
-      "description": "hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md)."
+      "description": "hk personal cross-project custom commands + hooks. /hk:pre-clear:save·resume — /clear 전후 세션 컨텍스트 핸드오프. /hk:planning-quick — 페이지/기능 sub-plan 4-phase(spec→design→build→summary) 워크플로우. 훅: 스킬 확인 넛지·기록 컨벤션 로드·완료 전 기록 게이트."
     },
     {
       "name": "orca",

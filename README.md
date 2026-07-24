@@ -8,7 +8,7 @@
 | 번들(플러그인) | 스킬 수 | 설명 |
 |---|---|---|
 | `dev` | 6 | Web frontend (React/Next) 팀 컨벤션 스킬: 컴포넌트·Context·Next.js App Router·Tailwind·TanStack Query 패턴 + client/server API-only 경계(브라우저 DB 직접접근·secret 노출 차단). |
-| `hk` | 0 | hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md). |
+| `hk` | 0 | hk personal cross-project custom commands + hooks. /hk:pre-clear:save·resume — /clear 전후 세션 컨텍스트 핸드오프. /hk:planning-quick — 페이지/기능 sub-plan 4-phase(spec→design→build→summary) 워크플로우. 훅: 스킬 확인 넛지·기록 컨벤션 로드·완료 전 기록 게이트. |
 | `orca` | 1 | Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Command mechanics delegate to Orca's own orca-cli/orchestration skills. |
 | `vendor` | 25 | 외부(벤더) 스킬 모음 — 출처·버전(SHA)·라이선스는 VENDORED-SKILLS.md 참고. /vendor:add|update|remove 로 관리. |
 <!-- BUNDLES:END -->
