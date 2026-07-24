@@ -10,7 +10,7 @@
 | `dev` | 6 | Web frontend (React/Next) 팀 컨벤션 스킬: 컴포넌트·Context·Next.js App Router·Tailwind·TanStack Query 패턴 + client/server API-only 경계(브라우저 DB 직접접근·secret 노출 차단). |
 | `hk` | 0 | hk personal cross-project custom commands. /hk:pre-clear:save & /hk:pre-clear:resume — hand off session context around /clear (writes/reads .hk/pre-clear/handoff.md). |
 | `orca` | 1 | Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Command mechanics delegate to Orca's own orca-cli/orchestration skills. |
-| `vendor` | 6 | 외부(벤더) 스킬 모음 — 출처·버전(SHA)·라이선스는 VENDORED-SKILLS.md 참고. /vendor:add|update|remove 로 관리. |
+| `vendor` | 11 | 외부(벤더) 스킬 모음 — 출처·버전(SHA)·라이선스는 VENDORED-SKILLS.md 참고. /vendor:add|update|remove 로 관리. |
 <!-- BUNDLES:END -->
 
 번들 표 · `marketplace.json` 설명은 **커밋 훅이 자동 동기화**한다(수동 편집 금지). 원본은 파일시스템 + 각 `plugin.json`. 스킬 상세는 각 `plugins/<번들>/skills/<스킬>/SKILL.md`.
