@@ -3,6 +3,10 @@
 이 파일은 `npx skills`(skills.sh)로 받아온 **스토어 스킬 26개의 원본 출처**를 기록한다.
 2026-07-22 리팩토링을 위해 이 26개를 repo에서 일괄 삭제하기 전, 되받을 수 있도록 남긴 receipt다.
 
+## 현재 상태
+
+`vendor` 번들에 외부 스킬을 실제로 재배포 중이다(현재 25개). 추가/갱신/삭제는 `/vendor:add|update|remove` (repo-local `.claude/commands/vendor/`). 아래 표는 2026-07-22에 **삭제했던** 26개의 출처 기록(재설치 참고용) — 그중 다수가 vendor로 다시 들어왔다.
+
 ## 재설치(re-vendor) 절차
 
 `npx skills add`는 `.claude/skills`(에이전트 디렉터리)에 설치하지, 이 repo의 `plugins/<bundle>/skills/`에 넣지 않는다.

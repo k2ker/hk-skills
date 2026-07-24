@@ -40,6 +40,7 @@
 
 - clone + repo 신뢰 시 자동 설치 프롬프트. Hermes 불필요.
 - `settings.local.json`(gitignore) 말고 `settings.json`(커밋)에 둬야 다른 PC에도 전파.
+- 외부 라이브러리 스킬(vercel·tanstack·supabase·prisma 등)이 필요하면 `vendor@hk-skills`도 켠다(옵트인 — 25개 다 켜면 always-on ~3k 토큰이니 필요한 만큼만).
 
 ## Hermes에서 쓰는 법
 
@@ -54,6 +55,7 @@ Hermes는 마켓플레이스로 install하지 않고, 쓰려는 프로필의 `sk
 
 - 웹(React/Next): `dev`
 - 웹 + 개인 커맨드/훅: `dev hk`
+- 웹 + 외부 라이브러리 스킬: `dev vendor` (vendor는 필요한 스킬만 골라 켜기)
 - 멀티에이전트 오케스트레이션: `orca`
 
 ## 업데이트

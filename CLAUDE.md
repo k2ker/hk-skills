@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `hk-skills`는 애플리케이션이 아니라 **Claude Code 플러그인 마켓플레이스**다. 스킬(SKILL.md), 슬래시 커맨드, 훅을 번들(플러그인) 단위로 모아 여러 프로젝트/PC에서 공유·중앙관리한다. 런타임 코드도, 빌드도, 의존성도 없다 — 유일한 실행 코드는 파생 파일을 동기화하는 zero-dep node 스크립트 하나다.
 
-번들: `dev`(React/Next 프론트엔드 팀 컨벤션 스킬), `hk`(개인 커맨드 + 훅), `orca`(멀티에이전트 오케스트레이션).
+번들: `dev`(React/Next 프론트엔드 팀 컨벤션 스킬), `hk`(개인 커맨드 + 훅), `orca`(멀티에이전트 오케스트레이션), `vendor`(외부 라이브러리 벤더 스킬 브릿지 — 아래 참고).
 
 ## 핵심 아키텍처 — SSOT → 파생 파일
 
@@ -77,3 +77,12 @@ plugins/<bundle>/
 - **Hermes**: 마켓플레이스를 설치하지 않고 `plugins/` 밑 SKILL.md들을 `skills.external_dirs`로 직접 읽는다. 이 경로의 스킬은 `npx skills update` 대상이 아니며 수정은 이 repo에서 git으로 관리한다.
 
 버전은 각 `plugin.json`의 `version`. 소비 측 갱신은 `/plugin marketplace update hk-skills`.
+
+## 벤더(외부) 스킬 브릿지 (`vendor` 번들)
+
+`vendor`는 남이 만든 스킬(vercel·tanstack·supabase·prisma 등)을 이 마켓플레이스로 **재배포**하는 창고다. 소비 프로젝트가 `vendor@hk-skills`를 켜면 그 스킬들을 받는다.
+
+- **관리 = `/vendor:add|update|remove`** (repo-local `.claude/commands/vendor/`, 배포 안 됨). `npx skills add`로 받아 `plugins/vendor/skills/`로 옮기고 sync.
+- **왜 `plugins/`에 두나**: 소비자가 쓰려면 스킬이 `plugins/vendor/skills/`에 **커밋된 실제 복사본**이어야 한다 — Claude Code 플러그인·Hermes 둘 다 `plugins/`만 읽는다. `npx skills`는 `.claude/skills`에만 넣으니 옮기는 단계가 필수. 옮긴 뒤엔 `skills update`가 못 닿아 갱신도 `/vendor:update`로 재수확한다.
+- **출처 기록**: `VENDORED-SKILLS.md`.
+- **유지보수 도구는 `.claude/skills/`에**: 이 repo를 관리하는 에이전트가 스킬 찾기·만들기에 쓰는 `find-skills`·`skill-creator`는 repo의 `.claude/skills/`에 둔다(그래야 이 세션에서 실제로 쓴다). `plugins/`의 스킬은 이 repo에선 **자동 로드 안 됨** — 배포 원본일 뿐이다.
