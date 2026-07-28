@@ -1,11 +1,67 @@
 # Vendored Skills — 출처 기록 (provenance manifest)
 
-이 파일은 `npx skills`(skills.sh)로 받아온 **스토어 스킬 26개의 원본 출처**를 기록한다.
-2026-07-22 리팩토링을 위해 이 26개를 repo에서 일괄 삭제하기 전, 되받을 수 있도록 남긴 receipt다.
+이 파일은 `vendor` 번들이 재배포 중인 **외부 스킬의 원본 출처**를 기록한다.
+`npx skills`로 받은 스킬은 `plugins/`로 옮기는 순간 `skills update`가 못 닿으므로, 되받을 좌표를 여기 남긴다.
 
-## 현재 상태
+## 현재 배치 — vendor 번들 25개 (2026-07-28 기준)
 
-`vendor` 번들에 외부 스킬을 실제로 재배포 중이다(현재 25개). 추가/갱신/삭제는 `/vendor:add|update|remove` (repo-local `.claude/commands/vendor/`). 아래 표는 2026-07-22에 **삭제했던** 26개의 출처 기록(재설치 참고용) — 그중 다수가 vendor로 다시 들어왔다.
+추가/갱신/삭제는 `/vendor:add|update|remove` (repo-local `.claude/commands/vendor/`).
+
+| skill | 원본 repo | 성격 |
+| --- | --- | --- |
+| deploy-to-vercel | `vercel-labs/agent-skills` | 공식 |
+| find-skills | `vercel-labs/skills` | 공식 |
+| framer-motion-animator | `patricio0312rev/skills` | ⚠️ 커뮤니티 |
+| frontend-design | `anthropics/skills` | 공식 |
+| playwright-best-practices | `currents-dev/playwright-best-practices-skill` | ⚠️ 커뮤니티 |
+| playwright-cli | `microsoft/playwright-cli` | 공식 |
+| prisma-cli | `prisma/skills` | 공식 |
+| prisma-client-api | `prisma/skills` | 공식 |
+| shadcn | `shadcn-ui/ui` | 공식 |
+| skill-creator | `anthropics/skills` | 공식 |
+| storybook | `DaleStudy/skills` | ⚠️ 커뮤니티 |
+| supabase | `supabase/agent-skills` | 공식 |
+| supabase-postgres-best-practices | `supabase/agent-skills` | 공식 |
+| tailwind-design-system | `wshobson/agents` | ⚠️ 커뮤니티 |
+| tanstack-form | `tanstack-skills/tanstack-skills` | 공식 |
+| tanstack-query | `tanstack-skills/tanstack-skills` | 공식 |
+| tanstack-query-best-practices | `DeckardGer/tanstack-agent-skills` | ⚠️ 커뮤니티 |
+| tanstack-table | `tanstack-skills/tanstack-skills` | 공식 |
+| turborepo | `vercel/turborepo` | 공식 |
+| typescript-advanced-types | `wshobson/agents` | ⚠️ 커뮤니티 |
+| ui-ux-pro-max | `nextlevelbuilder/ui-ux-pro-max-skill` | ⚠️ 커뮤니티 |
+| vercel-cli | `vercel/vercel` | 공식 |
+| vercel-cli-with-tokens | `vercel-labs/agent-skills` | 공식 |
+| vercel-composition-patterns | `vercel-labs/agent-skills` | 공식 |
+| vercel-react-best-practices | `vercel-labs/agent-skills` | 공식 |
+| vitest | `antfu/skills` | 공식 |
+
+- ⚠️ **커뮤니티(비공식) 출처**는 안정성·유지가 공식보다 약하다. 갱신 시 내용 급변 가능 — diff를 눈으로 확인하고 반영한다.
+- `orca-cli`·`orchestration`·`computer-use`는 `orca-workers`가 참조로 처리하므로 vendor에 넣지 않는다.
+- **Prisma는 상시 사용 2개만 넣는다** — `prisma-client-api`(쿼리)·`prisma-cli`(init/generate/migrate/studio). `prisma-upgrade-v7`·`prisma-mongodb-upgrade`는 마이그레이션 시점에만, `prisma-postgres`·`prisma-compute` 계열은 Prisma 자사 호스팅 제품 전용이라 제외했다. 필요해지면 그때 `/vendor:add prisma/skills <이름>`.
+- **스킬을 추가하면 이 표에 반드시 한 줄 넣는다.** 여기 없으면 나중에 갱신할 좌표가 사라진다 — `prisma-orm-v7-skills`가 실제로 그렇게 출처를 잃었다(2026-07-28 대조 때 발견, 결국 교체).
+
+## 최신판 대조 이력
+
+### 2026-07-28 — 25개 전수 대조 (파일 단위 diff)
+
+최신판을 전부 받아 `plugins/vendor/skills/`와 대조. **19개 완전 동일**(갱신 불필요). 나머지 발견:
+
+| 스킬 | 상태 | 판단 |
+| --- | --- | --- |
+| `prisma-orm-v7-skills` | **출처 미기록** — 이 표에 항목이 없어 어느 repo에서 받았는지 확인 불가(`prisma/prisma`에는 스킬 없음). 내용은 Prisma v7 변경사항 121줄 단일 파일 | ✅ **`prisma-client-api` + `prisma-cli`로 교체**(둘 다 `prisma/skills` 공식). 상세는 아래 |
+| `turborepo` | 최신판이 `2.10.7-canary.1` (우리는 stable `2.10.6`). 차이는 버전 문자열·`$schema` URL뿐, 내용 변경 없음 | **갱신 안 함** — canary로 내려가는 셈 |
+| `deploy-to-vercel` | `Archive.zip`(11KB)이 우리 쪽에만 있음. 업스트림 최신판에 없는 수확 잔여물 | ✅ 삭제함 |
+| `playwright-cli`·`shadcn`·`vercel-cli`·`vitest`·`turborepo` | LICENSE 파일이 우리 쪽에만 있음. 현재 `npx skills add`는 LICENSE를 안 딸려옴 | **우리 쪽이 나음 — 유지** |
+
+**Prisma 교체 경위** — 출처를 잃은 `prisma-orm-v7-skills`를 대신할 스킬을 고르며 처음엔 주제가 같다는 이유로 `prisma-upgrade-v7`을 넣었으나, 이건 **v6→v7 마이그레이션 전용**이라 이미 v7을 쓰는 프로젝트에선 트리거되지 않는다. `find-skills` 절차로 `prisma/skills`(공식, 9개, 56~66K installs)를 다시 훑어 **상시 사용되는 `prisma-client-api`·`prisma-cli` 2개로 확정**했다. 나머지 7개를 뺀 이유는 위 "현재 배치" 참고.
+
+대조 방법 (`--skill a,b` 콤마 나열은 현재 CLI에서 실패 — `-s` 를 스킬마다 따로):
+
+```bash
+npx -y skills@latest add <owner/repo> -s <skill> --copy -a claude-code -y   # 임시 dir에서
+diff -rq plugins/vendor/skills/<skill> <임시>/.claude/skills/<skill>
+```
 
 ## 재설치(re-vendor) 절차
 
@@ -26,7 +82,9 @@ node scripts/sync-marketplace.mjs --fix
   `git checkout <this-commit> -- plugins/<bundle>/skills/<name>`
 - ⚠️ **커뮤니티(비공식) 출처**는 안정성/유지가 공식보다 약하다. 업데이트 시 내용 급변 가능.
 
-## 26개 스토어 스킬 출처
+## (히스토리) 2026-07-22 일괄 삭제 당시 26개 출처
+
+> 아래는 **2026-07-22 리팩토링 때 repo에서 지운 26개의 스냅샷**이다. `bundle` 컬럼은 당시 이름(`common`/`dev`)이라 현재 배치와 다르다. 현재 목록은 위 "현재 배치" 표를 본다. 이 표는 그때 상태로 되돌릴 때만 참고한다.
 
 | bundle | skill | 원본 repo | 성격 | pinned |
 | --- | --- | --- | --- | --- |
