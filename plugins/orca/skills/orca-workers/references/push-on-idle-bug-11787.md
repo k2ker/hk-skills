@@ -131,7 +131,7 @@ orca orchestration check --ack <deliveryId> --wait --types worker_done,escalatio
 | 불량 worker_done (바인딩·dispatch 없는 터미널) | `run_required` 에러로 **진입 자체 거부** |
 | 불량 worker_done (컨텍스트 있고 id 불량) | `Rejected …` 접두어로 적재만, task 완료 마킹 안 됨 |
 
-**추가 발견 ① — 대기 공백(no-waiter window) 배달 유실.** 직전 `--wait`이 타임아웃으로 죽고 다음 `--wait`을 걸기 전 공백에 도착한 `worker_done`이, 이후 어떤 `check`/`check --wait`에도 잡히지 않았다(메시지는 mailbox에 `read: 1`·미ack로 존재, task는 `completed`로 정산됨 — lifecycle 처리와 코디네이터 배달이 분리돼 있고 후자만 유실). 1회 관측이라 재현 조건은 미확정. **완화: ① 배치 처리 즉시 다음 `--wait`을 걸어 공백을 최소화 ② 타임아웃 체크포인트에서 `task-list`를 확인 — 메일을 못 받았는데 task가 `completed`면 배달 유실로 간주하고 `inbox`로 존재 확인 후 워커에게 파일 보고를 요청해 수확.**
+**추가 발견 ① — 대기 공백(no-waiter window) 배달 유실.** 직전 `--wait`이 타임아웃으로 죽고 다음 `--wait`을 걸기 전 공백에 도착한 `worker_done`이, 이후 어떤 `check`/`check --wait`에도 잡히지 않았다(메시지는 mailbox에 `read: 1`·미ack로 존재, task는 `completed`로 정산됨 — lifecycle 처리와 코디네이터 배달이 분리돼 있고 후자만 유실). 1회 관측이라 재현 조건은 미확정. **완화: ① 배치 처리 즉시 다음 `--wait`을 걸어 공백을 최소화(가능하면 디스패치 전에 미리 가동) ② 타임아웃 체크포인트에서 `task-list`를 확인 — 메일을 못 받았는데 task가 `completed`면 배달 유실로 간주하고 `inbox`로 존재 확인 후 워커에게 파일 보고를 요청해 수확.** 후속 라운드에서 수신기를 디스패치 **전에** 가동하자 유실 없이 즉시 수신됨(worker_done 전송 시각 = 수신 시각) — 공백 가설과 부합.
 
 **추가 발견 ② — 워커 세션도 사용자 레벨 플러그인 훅을 상속한다.** 워커로 띄운 Claude 세션에 이 마켓플레이스의 훅(예: hk 번들의 Stop 기록 강제 훅)이 그대로 걸린다. 워커의 턴 종료가 훅에 붙잡혀 완료 보고가 늦어지거나 브리프 밖 행동(기록 파일 생성 등)을 유발할 수 있다 — 브리프에 "추가 작업 금지"를 명시하고, 워커 완료가 유난히 늦으면 훅 개입을 의심하라.
 
