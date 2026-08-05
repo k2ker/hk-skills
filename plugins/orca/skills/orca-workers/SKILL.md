@@ -1,7 +1,7 @@
 ---
 name: orca-workers
 description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), background check --wait reception of worker_done (auto-injection is broken — orca#11787), cross-model review (Claude↔Codex either direction, or Claude-only cross-session), fix loop, and integration landing. Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
-version: 0.4.0
+version: 0.4.1
 author: hk
 license: MIT
 platforms: [macos, linux]
@@ -37,7 +37,7 @@ Orca 1.4.162+는 `run:<id>` 앞 lifecycle 메일(`worker_done`·`question`·`esc
 
 ## 워크플로
 
-- **P0 프로비저닝** — 워커당 워크트리 1개. 한 워크트리에 워커 여럿은 절대 금지 — 작업트리·git 인덱스·dev 서버를 공유해 반쯤 쓰인 파일로 얽힌다. fresh 워크트리는 deps 없음 → 리드가 설치 + 베이스라인 검증 후 투입.
+- **P0 프로비저닝** — 워커당 워크트리 1개. 한 워크트리에 워커 여럿은 절대 금지 — 작업트리·git 인덱스·dev 서버를 공유해 반쯤 쓰인 파일로 얽힌다. fresh 워크트리는 deps 없음 → 리드가 설치 + 베이스라인 검증 후 투입. **예외: 읽기 전용 워커**(집계·검증·정찰 — 파일을 일절 안 만드는 작업)는 리드의 현재 워크트리에 **형제 세션**으로 띄워도 안전하다(워크트리 생성·정리 비용 0; 실측 검증됨) — 단 브리프에 "산출은 오직 worker_done body로, 임시 파일 포함 일절 금지"를 명시하고, 쓰기가 조금이라도 생기면 즉시 워크트리 분리로 돌아간다.
 - **P1 파악** — 리드가 실파일로 계약·표면·스코프 확정(브리프 정확도가 결과를 좌우). 표면이 크면 read-only 스카우트 후 리드가 재대조.
 - **P2 브리프** — 워커별 파일로 작성(터미널 장문 붙여넣기 금지 — 이스케이프·잘림). 필수: 역할("너는 X만") · 스코프 IN/**OUT** · 해당 프로젝트 규약 · 검증 명령 + 커밋 금지 · worker_done 보고 문구는 **이중 보고**로("전송, 실패 시 1회 재시도, 그래도 실패면 생략 — 성공 여부와 무관하게 최종 텍스트로 완료 보고"; "정확히 한 번만"으로 쓰면 전송 실패 시 그냥 포기한다). 파일 disjoint로 분할하고, 공유 계약(DTO)은 양쪽 브리프에 동일 shape 명시.
 - **P3 디스패치** — `terminal wait --for tui-idle`로 idle 확정(satisfied:true + blockedReason 없음) → `task-create` → `dispatch --inject` → 백그라운드 `check --wait` 가동. 워커가 보고 없이 exit하면 리드가 산출물을 직접 수확·검증한다(코드는 됐는데 보고만 못 한 경우가 흔함).
