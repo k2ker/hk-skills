@@ -26,7 +26,7 @@ Orca 1.4.162+는 `run:<id>` 앞 lifecycle 메일(`worker_done`·`question`·`esc
 - dispatch 후 `orca orchestration check --wait --types worker_done,escalation,question --timeout-ms <n>`을 **백그라운드로** 건다. 완료 시 하니스가 리드를 자동 재호출하므로 리드는 그동안 다른 일을 계속한다.
 - **2회차부터는 `check --ack <deliveryId> --wait …`** — ack 없이 반복하면 같은 배치가 무한 replay되어 새 완료가 영원히 안 보인다(증상이 "알림 고장"과 똑같아 오진 주의). 읽음 처리는 `--ack` 시점이며, 관찰만 할 땐 `--peek`(마킹 없음).
 - foreground `--wait`·sleep·폴링 루프는 금지 — 리드가 묶여 감독이 멈춘다. `terminal wait`류 긴 대기도 같은 이유로 백그라운드로.
-- 타임아웃·`{count:0}`은 실패가 아니라 체크포인트 — 다시 걸고 계속 기다린다(긴 작업은 15~60분이 정상).
+- 타임아웃·`{count:0}`은 실패가 아니라 체크포인트 — **즉시 다시 건다**(대기 공백에 도착한 메일이 이후 check에 안 잡히는 유실 사례 실측 — references 참고). 체크포인트마다 `task-list`도 본다: 메일을 못 받았는데 task가 `completed`면 배달 유실 — `inbox`로 존재 확인 후 워커에게 파일 보고를 받아 수확한다(긴 작업은 15~60분이 정상이니 조기 개입은 금물).
 
 ## 원칙
 
