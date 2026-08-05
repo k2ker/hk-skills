@@ -1,7 +1,7 @@
 ---
 name: orca-workers
 description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), background check --wait reception of worker_done (auto-injection is broken — orca#11787), cross-model review (Claude↔Codex either direction, or Claude-only cross-session), fix loop, and integration landing. Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
-version: 0.4.1
+version: 0.4.2
 author: hk
 license: MIT
 platforms: [macos, linux]
@@ -34,6 +34,7 @@ Orca 1.4.162+는 `run:<id>` 앞 lifecycle 메일(`worker_done`·`question`·`esc
 - **토폴로지는 의존 방향으로 정한다 — N-way 병렬이 기본 아님.** 파일 disjoint + 계약 독립이면 병렬, 강한 단방향 의존이면 웨이브(계약 먼저 확정, 다음 웨이브에서 병렬 — 안 나누면 다운스트림이 계약을 가정만 하다 합류 때 드리프트 수습), 소규모면 순차 1명이 더 빠르고 안전하다.
 - **모델 역할 = 사용자 결정 (기본 A) · 저자 ≠ 리뷰어 불변.** A: Claude 구현 → Codex 리뷰 / B: Codex 구현 → Claude 리뷰 / C: Claude 전용(구현·리뷰 별 세션 — 교차모델은 포기해도 독립 관점은 유지). Codex 가용성 먼저 확인(`command -v codex`), 없으면 무조건 C. 리드가 임의로 구현 모델을 바꾸지 않는다.
 - **커밋·푸시·배포·운영 인프라 = 승인 게이트.**
+- **정리까지가 사이클이다.** 워커 워크트리(`worktree rm`)·형제/리뷰어 터미널(`terminal close`)·브리프/리뷰 파일은 **용도가 끝나는 즉시** 리드가 회수한다 — P6 랜딩까지 간 경우만이 아니라 read-only 정찰·리뷰 전용·중단된 사이클도 동일. 방치된 워크트리·세션은 다음 사이클의 오염원이다(스테일 브랜치, handle 목록 혼란, dev 서버·메모리 점유). 사이클을 마치기 전 `worktree ps`·`terminal list`로 잔여물 0을 확인하고, 남겼다면 무엇을 왜 남겼는지 명시한다.
 
 ## 워크플로
 
