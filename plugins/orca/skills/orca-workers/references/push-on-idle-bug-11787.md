@@ -1,6 +1,8 @@
 # Orca #11787 — `worker_done` 자동 알림이 안 오는 문제 (1.4.162+)
 
 > 조사·실측: 2026-08-01. 이슈가 닫히고 Orca를 업데이트하면 이 문서와 아래 예외 규칙을 **되돌려야 한다**.
+>
+> **[갱신 2026-08-12]** 이슈는 여전히 Open이지만 **v1.4.177에 포함된 다른 수정으로 실질 문제가 해소됨** — waiter가 없으면 포인터 주입으로 리드를 깨운다(본문 주입 아님). 하단 "재실측 2026-08-12" 섹션 참고. 백그라운드 `check --wait` 주 경로는 그대로 유효하며 유지한다.
 
 ## 한 줄 요약
 
@@ -142,3 +144,25 @@ orca orchestration check --ack <deliveryId> --wait --types worker_done,escalatio
 - **진단 중에는 `--peek`를 쓸 것.** `--peek`는 미읽음 메시지를 마킹 없이 보여줘서 배달 상태(`delivered_at`)를 관찰하기에 안전하다. 실제 소비·읽음 처리는 `--ack` 시점이다(일반 `check`는 배치를 반환만 하고 ack 전까지 replay한다).
 - **코디네이터 터미널은 자기 Run에만 쓰기 가능**하다(`consumer_fenced`). 남의 Run에는 `task-create`를 할 수 없으니 그 세션에 위임해야 한다.
 - `worker_done`은 `taskId`와 `dispatchId`가 **둘 다** 있어야 거부되지 않는다(없으면 `Rejected worker_done: …`으로 mailbox에 남는다).
+
+## 재실측 2026-08-12 (Orca 1.4.180) — 포인터 깨우기 복구 확인
+
+이슈 #11787·원 수정 PR #11857은 여전히 **Open/미머지**. 그러나 **v1.4.177(2026-08-08)에 포함된 두 수정으로 실질 문제가 해소**됐다:
+
+- **#12584** — push가 idle "전환" 시점에만 발화하던 갭 수정: 이미 idle인 수신자에게도 pending 메일을 배달. 단 `check --wait` waiter가 등록돼 있으면 pull이 우선(이중 배달 방지).
+- **#12988** (#12953 Phase 1) — `run:<id>` 메일을 현재 코디네이터 터미널로 해석하되, **본문 대신 짧은 포인터**("You have N orchestration messages. Run `orca orchestration check`.")를 pane에 주입해 깨운다. 메일은 `check`가 소비할 때까지 pending 유지, 중복 포인터는 watermark로 억제.
+
+**A/B 실측** (이 머신, 실제 Run 바인딩 + task/dispatch + 셸 워커의 정상 `worker_done`):
+
+| 경로 | 결과 |
+|---|---|
+| 방식 1: 백그라운드 `check --wait` 사전 가동 | ✅ 발신 09:44:25 → waiter 캡처 09:44:26(**1초**), 하니스 재호출까지 ~20초 |
+| 방식 2: waiter 없이 idle 대기 | ✅ 발신 09:45:34 → 리드가 idle 된 직후 포인터 주입(09:47:01 — 리드가 바쁘면 idle까지 대기) → `check`로 정확 수신 |
+
+추가 실측:
+
+- **waiter가 배치를 받고 종료한 뒤 ack 전 틈에 포인터가 한 번 더 올 수 있다** — 무해하다(`check` 한 번 더 돌리면 0건). 중복 "수신"은 구조적으로 불가(메일은 mailbox에 한 통, 소비는 check뿐). 배치 처리 후 즉시 ack하면 틈이 사라져 포인터도 안 온다.
+- 1.4.180 정본 가이드는 `worker_done`에 **`--outcome succeeded|failed` 명시**를 요구하며, 유효한 worker_done은 task를 **자동 completed 처리**한다(실측 확인 — `task-update` 후속 불필요).
+- 상단 "대기 공백(no-waiter window) 배달 유실"은 이 수정으로 개선됐을 가능성이 높지만(메일이 check 소비 전까지 pending 유지) **별도 재현 실측은 안 했다** — 완화 규칙(즉시 재대기 + task-list 대조)은 유지한다.
+
+**판단**: 주 경로는 계속 백그라운드 `check --wait`(더 빠르고, 정본 가이드의 supervision 표준이며, push 회귀에 면역). 포인터 깨우기는 waiter를 깜빡했을 때의 이중 안전망. #12953 Phase 2(UserPromptSubmit 훅 턴 경계 배달)가 완성되면 재평가.

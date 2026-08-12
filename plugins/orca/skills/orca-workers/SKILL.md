@@ -1,7 +1,7 @@
 ---
 name: orca-workers
-description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), background check --wait reception of worker_done (auto-injection is broken — orca#11787), cross-model review (Claude↔Codex either direction, or Claude-only cross-session), fix loop, and integration landing. Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
-version: 0.4.2
+description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), background check --wait reception of worker_done (primary path; Orca 1.4.177+ adds pointer-wake as backup — orca#11787), cross-model review (Claude↔Codex either direction, or Claude-only cross-session), fix loop, and integration landing. Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
+version: 0.4.3
 author: hk
 license: MIT
 platforms: [macos, linux]
@@ -19,12 +19,12 @@ metadata:
 
 디스패치 전에 `orca-cli`·`orchestration` 스킬을 인벤토리에서 이름으로 로드한다(경로 하드코딩 금지 — 설치 위치는 머신마다 다름). 인벤토리에 없으면 Orca 환경이 아니라는 신호 → 진행하지 마라. 둘 다 discovery stub이므로 로드 후 `orca skills get <name>`으로 실행 바이너리와 버전이 일치하는 정본을 읽는다 — 기억이나 캐시로 명령을 추측하는 게 사고의 반복 원인이었다.
 
-## 수신 = 백그라운드 `check --wait` (자동 주입 없음)
+## 수신 = 백그라운드 `check --wait` (주 경로) + 포인터 깨우기 (보험)
 
-Orca 1.4.162+는 `run:<id>` 앞 lifecycle 메일(`worker_done`·`question`·`escalation`)을 pane에 자동 주입하지 않는다([orca#11787](https://github.com/stablyai/orca/issues/11787) — 원인·실측·배제된 헛다리 목록은 `references/push-on-idle-bug-11787.md`). 그래서:
+lifecycle 메일(`worker_done`·`question`·`escalation`)은 `run:<id>` 앞으로 오고, 소비는 `check`뿐이다. 1.4.162~1.4.176은 자동 알림이 전혀 없었고([orca#11787](https://github.com/stablyai/orca/issues/11787)), **1.4.177+는 waiter가 없을 때 idle pane에 "check 하라"는 포인터를 주입해 리드를 깨운다**(본문 주입 아님 — 원인·실측·재실측은 `references/push-on-idle-bug-11787.md`). 포인터는 waiter를 깜빡했을 때의 보험일 뿐, 주 경로는 여전히 아래다(더 빠르고 — 실측 1초 vs idle 대기 — push 회귀에도 면역):
 
 - dispatch 후 `orca orchestration check --wait --types worker_done,escalation,question --timeout-ms <n>`을 **백그라운드로** 건다. 완료 시 하니스가 리드를 자동 재호출하므로 리드는 그동안 다른 일을 계속한다.
-- **2회차부터는 `check --ack <deliveryId> --wait …`** — ack 없이 반복하면 같은 배치가 무한 replay되어 새 완료가 영원히 안 보인다(증상이 "알림 고장"과 똑같아 오진 주의). 읽음 처리는 `--ack` 시점이며, 관찰만 할 땐 `--peek`(마킹 없음).
+- **2회차부터는 `check --ack <deliveryId> --wait …`** — ack 없이 반복하면 같은 배치가 무한 replay되어 새 완료가 영원히 안 보인다(증상이 "알림 고장"과 똑같아 오진 주의). 읽음 처리는 `--ack` 시점이며, 관찰만 할 땐 `--peek`(마킹 없음). 배치 수신 후 ack 전 틈에 포인터("You have N orchestration messages…")가 또 떠도 정상 — check 한 번 더 돌려 0건 확인하면 끝(중복 수신은 구조적으로 불가).
 - foreground `--wait`·sleep·폴링 루프는 금지 — 리드가 묶여 감독이 멈춘다. `terminal wait`류 긴 대기도 같은 이유로 백그라운드로.
 - 타임아웃·`{count:0}`은 실패가 아니라 체크포인트 — **즉시 다시 건다**(대기 공백에 도착한 메일이 이후 check에 안 잡히는 유실 사례 실측 — references 참고). 체크포인트마다 `task-list`도 본다: 메일을 못 받았는데 task가 `completed`면 배달 유실 — `inbox`로 존재 확인 후 워커에게 파일 보고를 받아 수확한다(긴 작업은 15~60분이 정상이니 조기 개입은 금물).
 
@@ -48,7 +48,7 @@ Orca 1.4.162+는 `run:<id>` 앞 lifecycle 메일(`worker_done`·`question`·`esc
 
 ## 함정 (전부 실사고·실측 기록 — 추정 없음)
 
-2026-08 실측: 위 수신 섹션 전체 + `worker_done`은 `taskId`·`dispatchId` 둘 다 있어야 함(없으면 `Rejected`로 적재만 됨) + 코디네이터 터미널은 자기 Run에만 쓰기 가능(`consumer_fenced` — 남의 Run 작업은 그 세션에 위임).
+2026-08 실측: 위 수신 섹션 전체 + `worker_done`은 `taskId`·`dispatchId` 둘 다에 **`--outcome succeeded|failed`까지** 있어야 함(id 없으면 `Rejected`로 적재만 됨; 유효하면 task가 자동 `completed` 처리되므로 `task-update` 후속 불필요) + 코디네이터 터미널은 자기 Run에만 쓰기 가능(`consumer_fenced` — 남의 Run 작업은 그 세션에 위임).
 
 과거 실사고에서 검증:
 
