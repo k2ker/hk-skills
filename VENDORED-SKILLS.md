@@ -31,7 +31,7 @@
 | typescript-advanced-types | `wshobson/agents` | ⚠️ 커뮤니티 |
 | ui-ux-pro-max | `nextlevelbuilder/ui-ux-pro-max-skill` | ⚠️ 커뮤니티 |
 | vercel-cli | `vercel/vercel` | 공식 |
-| vercel-cli-with-tokens | `vercel-labs/agent-skills` | 공식 |
+| vercel-cli-with-tokens | `vercel-labs/agent-skills` | 공식 · ⚠️ **업스트림 제거됨**(2026-08-18 확인) — 갱신 좌표 상실, 로컬본만 유지 |
 | vercel-composition-patterns | `vercel-labs/agent-skills` | 공식 |
 | vercel-react-best-practices | `vercel-labs/agent-skills` | 공식 |
 | vitest | `antfu/skills` | 공식 |
@@ -42,6 +42,23 @@
 - **스킬을 추가하면 이 표에 반드시 한 줄 넣는다.** 여기 없으면 나중에 갱신할 좌표가 사라진다 — `prisma-orm-v7-skills`가 실제로 그렇게 출처를 잃었다(2026-07-28 대조 때 발견, 결국 교체).
 
 ## 최신판 대조 이력
+
+### 2026-08-18 — 26개 전수 대조 + 7개 일괄 갱신
+
+병렬 수확(`npx skills add` → `diff -rq`, 원본 repo 17개)으로 전수 대조. **18개 동일**(LICENSE만 로컬 여분인 vitest·shadcn·playwright-cli 포함), **7개 갱신 적용**, **1개 업스트림 소멸**:
+
+| 스킬 | 갱신 내용 |
+| --- | --- |
+| `supabase` | v0.1.7 — Debugging 섹션 신설, description에 디버깅 트리거 추가 |
+| `supabase-postgres-best-practices` | description 개선(#194), 본문 변경 없음 |
+| `vercel-cli` | 에이전트 안전 규칙 강화(자동 링크/인증 금지, `project inspect` 검증), `flags versions/diff` 신규 |
+| `prisma-cli` | 7.6.0→7.9.1 — `agent-safety.md`·`complete.md` 신규 |
+| `prisma-client-api` | 7.6.0→7.9.1 — constructor 옵션 등 레퍼런스 보강 |
+| `turborepo` | 2.10.6→2.10.11-canary.4 — `--affected` 베이스 설명 정정, `TURBO_SCM_BASE`, `--parallel` deprecated, turbo-ignore 신규 옵션. **canary지만 실질 내용이 달라 갱신**(7/28의 "버전 문자열뿐이면 canary 안 받음" 판례와 상황 다름) |
+| `ui-ux-pro-max` | 대규모 개편 — 데이터 CSV 개편, 'Query Contract' 섹션 신설. 커뮤니티 출처 규칙대로 위험 패턴 스캔(네트워크·eval류 없음, subprocess는 자체 테스트 전용) 후 반영 |
+
+- `vercel-cli-with-tokens` — **업스트림(`vercel-labs/agent-skills`)에서 제거됨.** 로컬본 유지, 갱신 불가 상태로 표에 표기. 그 repo에 신규 스킬(vercel-react-native-skills, vercel-optimize, writing-guidelines) 등장 — 필요 시 `/vendor:add` 후보.
+- LICENSE 로컬 유지물은 갱신 시 보존함(turborepo·vercel-cli).
 
 ### 2026-07-28 — 25개 전수 대조 (파일 단위 diff)
 
