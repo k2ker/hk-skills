@@ -1,7 +1,7 @@
 ---
 name: orca-workers
 description: "Use when coordinating parallel Orca sub-worktree workers for one feature/page cycle: provision worktrees, brief, supervised dispatch (task-create + dispatch --inject), background check --wait reception of worker_done (primary path; Orca 1.4.177+ adds pointer-wake as backup — orca#11787), cross-model review (Claude↔Codex either direction, or Claude-only cross-session), fix loop, and integration landing. Command mechanics delegate to the orca-cli & orchestration skills. Triggers: Orca orchestration, parallel worktree workers, supervised dispatch, worker_done, cross-model review."
-version: 0.4.3
+version: 0.4.4
 author: hk
 license: MIT
 platforms: [macos, linux]
@@ -27,6 +27,7 @@ lifecycle 메일(`worker_done`·`question`·`escalation`)은 `run:<id>` 앞으�
 - **2회차부터는 `check --ack <deliveryId> --wait …`** — ack 없이 반복하면 같은 배치가 무한 replay되어 새 완료가 영원히 안 보인다(증상이 "알림 고장"과 똑같아 오진 주의). 읽음 처리는 `--ack` 시점이며, 관찰만 할 땐 `--peek`(마킹 없음). 배치 수신 후 ack 전 틈에 포인터("You have N orchestration messages…")가 또 떠도 정상 — check 한 번 더 돌려 0건 확인하면 끝(중복 수신은 구조적으로 불가).
 - foreground `--wait`·sleep·폴링 루프는 금지 — 리드가 묶여 감독이 멈춘다. `terminal wait`류 긴 대기도 같은 이유로 백그라운드로.
 - 타임아웃·`{count:0}`은 실패가 아니라 체크포인트 — **즉시 다시 건다**(대기 공백에 도착한 메일이 이후 check에 안 잡히는 유실 사례 실측 — references 참고). 체크포인트마다 `task-list`도 본다: 메일을 못 받았는데 task가 `completed`면 배달 유실 — `inbox`로 존재 확인 후 워커에게 파일 보고를 받아 수확한다(긴 작업은 15~60분이 정상이니 조기 개입은 금물).
+- 워커 침묵이 유난히 길면 **승인 다이얼로그 감금**을 의심한다 — 다이얼로그는 오케스트레이션 메일이 아니라서 `check --wait`에 **절대 안 잡힌다**. 감지는 `terminal wait --for tui-idle --timeout-ms 3000` 프로브: `satisfied:false` + `blockedReason`(예: `codex-interactive-prompt`)이면 감금이다(실측 — `references/approval-dialog-detection.md`). `read`로 무슨 승인인지 확인 후 필요한 것만 `send`로 승인. 예방은 워커 기동 시 승인 정책을 미리 결정하는 것.
 
 ## 원칙
 
