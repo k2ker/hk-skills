@@ -3,7 +3,7 @@
 이 파일은 `vendor` 번들이 재배포 중인 **외부 스킬의 원본 출처**를 기록한다.
 `npx skills`로 받은 스킬은 `plugins/`로 옮기는 순간 `skills update`가 못 닿으므로, 되받을 좌표를 여기 남긴다.
 
-## 현재 배치 — vendor 번들 26개 (2026-08-05 기준)
+## 현재 배치 — vendor 번들 26개 (2026-08-18 기준)
 
 추가/갱신/삭제는 `/vendor:add|update|remove` (repo-local `.claude/commands/vendor/`).
 

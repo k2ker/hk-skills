@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `hk-skills`는 애플리케이션이 아니라 **Claude Code 플러그인 마켓플레이스**다. 스킬(SKILL.md), 슬래시 커맨드, 훅을 번들(플러그인) 단위로 모아 여러 프로젝트/PC에서 공유·중앙관리한다. 런타임 코드도, 빌드도, 의존성도 없다 — 유일한 실행 코드는 파생 파일을 동기화하는 zero-dep node 스크립트 하나다.
 
-번들: `dev`(React/Next 프론트엔드 팀 컨벤션 스킬), `hk`(개인 커맨드 + 훅), `orca`(멀티에이전트 오케스트레이션), `vendor`(외부 라이브러리 벤더 스킬 브릿지 — 아래 참고).
+번들: `dev`(React/Next 프론트엔드 팀 컨벤션 스킬), `hk`(개인 커맨드 + 훅 + 스킬), `orca`(멀티에이전트 오케스트레이션), `vendor`(외부 라이브러리 벤더 스킬 브릿지 — 아래 참고).
 
 ## 핵심 아키텍처 — SSOT → 파생 파일
 
@@ -56,7 +56,7 @@ plugins/<bundle>/
   skills/<skill>/SKILL.md           # 스킬 본체 (SSOT: frontmatter name/description)
   skills/<skill>/references/*.md    # 스킬 보조 문서 (선택)
   commands/**/*.md                  # 슬래시 커맨드 (hk 번들) — 스킬 아님
-  hooks/hooks.json                  # 플러그인 제공 훅 (hk·orca 번들)
+  hooks/hooks.json                  # 플러그인 제공 훅 (hk 번들 — orca 훅은 #11787 대응 과정에서 삭제됨)
 ```
 
 - **스킬로 카운트되는 조건**: 디렉터리 안에 `SKILL.md`가 있어야 한다. `.gitkeep`만 있는 placeholder 디렉터리는 스킬로 세지 않는다.
