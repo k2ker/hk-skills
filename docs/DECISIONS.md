@@ -2,6 +2,10 @@
 
 새 결정이 생기면 위에 추가 (최신이 위).
 
+## 2026-08-19 — Hermes 소비 경로 폐기 (사용자 선언)
+
+사용자가 Hermes를 더 안 쓰기로 함 → `skills.external_dirs`용 로컬 실파일 요구가 사라짐. **후속 미결**: ① vendor 아키텍처 재평가 — git-subdir+SHA 핀 전환(공식 방식·repo 경량화) vs 복사 방식 유지(업스트림 소멸 보험 — `vercel-cli-with-tokens` 실사례 · 커뮤니티 diff 검증). 권고는 유지+SHA 기록 보강, 선택 대기. ② CLAUDE.md·README의 Hermes 소비 경로 문단 정리 — vendor 결정과 함께 반영.
+
 ## 2026-08-18 — 기록 컨벤션 도입
 
 repo 전용 장부(VENDORED-SKILLS.md·스킬 references)만 쓰던 것에서 `MEMORY.md` + `docs/tech-notes/` + `docs/DECISIONS.md` 컨벤션을 도입. 전용 장부가 정본인 내용은 중복 기록하지 않고 포인터만 둔다.

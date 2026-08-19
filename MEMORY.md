@@ -17,3 +17,9 @@
 
 - [001 — Orca 1.4.180 orchestration 수신 경로·다이얼로그 감지 실측](docs/tech-notes/001-orca-orchestration-reception.md)
 - [002 — Claude Code 생태계 서베이: 훅·스킬·커맨드·플러그인 후보 48건 압축](docs/tech-notes/002-claude-code-ecosystem-survey.md)
+- [003 — 플러그인 settings/MCP 배포 제약: settings는 agent 필드만, MCP는 .mcp.json 필수](docs/tech-notes/003-plugin-settings-mcp-constraints.md)
+
+## 미결 (다음 세션이 이어받을 것)
+
+- vendor 아키텍처: git-subdir+SHA 전환 vs 복사 유지+SHA 기록 — 사용자 선택 대기 (DECISIONS 2026-08-19 참고)
+- 생태계 서베이(002) 도입 선정: 스킬 /vendor:add·hk 훅 추가·MCP 동봉 — 사용자 선택 대기
