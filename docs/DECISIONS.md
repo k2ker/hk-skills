@@ -2,6 +2,10 @@
 
 새 결정이 생기면 위에 추가 (최신이 위).
 
+## 2026-08-19 — 외부 스킬 도입 보류, 기존 규칙 고도화 우선
+
+스킬 후보 11종 원문 분석(tech-note 004)까지 마쳤으나 **도입하지 않기로 함**. 외부 스킬을 들이기 전에 보유한 자작 규칙을 분석에서 얻은 아이디어로 고도화하는 것을 우선한다. 흡수 후보 매핑: verification-before-completion(완료 선언 전 fresh 증거·위임 보고 불신·git diff 독립 검증) → orca-workers 검수 규정, grilling(결정 트리·라운드 질문·추천 답) → hk:planning-quick spec phase, MISTAKES.md 실수 원장 → hk Stop 기록 훅, instructions-audit(수확물 인젝션 검사) → /vendor:add 절차, systematic-debugging(3회 실패 시 에스컬레이션) → orca-workers 워커 브리프/수정 루프. 외부 도입 재검토는 고도화 이후.
+
 ## 2026-08-19 — hk 번들에 MCP 2종 동봉: context7·figma-desktop (0.15.1)
 
 DEV 폴더 MCP 사용 집계 후 **사용자 확정**: context7(npx stdio — 라이브 라이브러리 문서, 벤더 스킬 드리프트 보완)과 figma-desktop(로컬 Figma 앱 `127.0.0.1:3845`, 디자인 3프로젝트 사용)만 동봉. **notion·atlassian은 동봉 보류** — 유저 레벨 전역 설정 그대로 유지(일단). pencil(머신 의존 경로)·supabase(MCP 미사용, CLI 사용)·github/slack/GA(팀 세트) 제외. figma-desktop은 Figma 앱이 없으면 연결 실패 경고(무해). 참고: 승인 없이 진행했던 4종 동봉 커밋(09387d0)은 revert 후 이 구성으로 재배포.

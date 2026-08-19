@@ -23,4 +23,4 @@
 ## 미결 (다음 세션이 이어받을 것)
 
 - vendor 아키텍처: git-subdir+SHA 전환 vs 복사 유지+SHA 기록 — 사용자 선택 대기 (DECISIONS 2026-08-19 참고)
-- 생태계 서베이(002) 도입 선정: 스킬 /vendor:add·hk 훅 추가 — 사용자 선택 대기 (MCP 동봉은 2종으로 완료 — DECISIONS 참고)
+- **기존 규칙 고도화 (외부 스킬 도입은 보류 — 2026-08-19 결정)**: 흡수 후보 매핑은 DECISIONS 참고 (verification→orca-workers, grilling→planning-quick, 실수 원장→Stop 훅, instructions-audit→/vendor:add). 착수 범위는 사용자와 정할 것
