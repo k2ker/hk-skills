@@ -2,6 +2,10 @@
 
 새 결정이 생기면 위에 추가 (최신이 위).
 
+## 2026-08-19 — hk 번들에 MCP 4종 동봉 (0.15.0)
+
+DEV 폴더 전수 스캔으로 사용 빈도를 집계해 **notion(전역·양쪽 하니스) · atlassian(전역) · context7(Codex에서 이미 사용) · figma-desktop(디자인 3프로젝트)** 를 `plugins/hk/.mcp.json`으로 동봉. **제외**: pencil(앱 내장 바이너리 경로가 머신 의존), supabase(MCP 미사용 — CLI 사용, Codex의 죽은 설정은 별도 정리 예정), github/slack/GA(팀 세트 — 개인 hk가 아니라 klleon 쪽 자산), 프로젝트 특화(figma dev-mode·serena·task-master·tmux-bridge 등). **마이그레이션**: 각 PC에서 marketplace update + 새 세션 후 유저 레벨(~/.claude.json)의 notion·atlassian 중복 제거. figma-desktop은 Figma 앱이 없으면 연결 실패 경고(무해).
+
 ## 2026-08-19 — Hermes 소비 경로 폐기 (사용자 선언)
 
 사용자가 Hermes를 더 안 쓰기로 함 → `skills.external_dirs`용 로컬 실파일 요구가 사라짐. **후속 미결**: ① vendor 아키텍처 재평가 — git-subdir+SHA 핀 전환(공식 방식·repo 경량화) vs 복사 방식 유지(업스트림 소멸 보험 — `vercel-cli-with-tokens` 실사례 · 커뮤니티 diff 검증). 권고는 유지+SHA 기록 보강, 선택 대기. ② CLAUDE.md·README의 Hermes 소비 경로 문단 정리 — vendor 결정과 함께 반영.

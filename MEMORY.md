@@ -4,7 +4,7 @@
 
 ## 현재 상태 (2026-08-18)
 
-- 번들 버전: `orca` 0.4.5 · `vendor` 0.2.1 · `hk` 0.14.0 · `dev` 0.2.0
+- 번들 버전: `orca` 0.4.5 · `vendor` 0.2.1 · `hk` 0.15.0(MCP 4종 동봉) · `dev` 0.2.0
 - 반영 경로: 커밋→푸시 후 각 PC에서 `/plugin marketplace update hk-skills` → **새 세션** (플러그인은 GitHub 캐시본으로 실행되므로 repo 수정만으로는 반영 0)
 - 벤더 스킬 26개 최신 전수 대조: 2026-08-18 (7개 갱신, `vercel-cli-with-tokens` 업스트림 소멸)
 
@@ -22,4 +22,5 @@
 ## 미결 (다음 세션이 이어받을 것)
 
 - vendor 아키텍처: git-subdir+SHA 전환 vs 복사 유지+SHA 기록 — 사용자 선택 대기 (DECISIONS 2026-08-19 참고)
-- 생태계 서베이(002) 도입 선정: 스킬 /vendor:add·hk 훅 추가·MCP 동봉 — 사용자 선택 대기
+- 생태계 서베이(002) 도입 선정: 스킬 /vendor:add·hk 훅 추가 — 사용자 선택 대기 (MCP 동봉은 완료 — DECISIONS 참고)
+- MCP 동봉 후속: 각 PC 유저 레벨의 notion·atlassian 중복 제거 + Codex의 죽은 supabase MCP 설정 정리
