@@ -16,3 +16,4 @@
 ## Tech-notes
 
 - [001 — Orca 1.4.180 orchestration 수신 경로·다이얼로그 감지 실측](docs/tech-notes/001-orca-orchestration-reception.md)
+- [002 — Claude Code 생태계 서베이: 훅·스킬·커맨드·플러그인 후보 48건 압축](docs/tech-notes/002-claude-code-ecosystem-survey.md)
