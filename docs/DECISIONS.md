@@ -2,6 +2,10 @@
 
 새 결정이 생기면 위에 추가 (최신이 위).
 
+## 2026-08-21 — 기록 컨벤션 v2 채택: 조각 로그 + 책갈피
+
+순번 tech-note·단일 append 장부 폐지 → `docs/log/` 날짜-슬러그 조각(박제, 번복은 새 조각+refs) + MEMORY=책갈피(미결·한시 계약만). 규칙 정본·실물은 record-pilot 워크트리 `docs/log/README.md`(파일럿 실측: MEMORY 123KB→26KB, 조각 41개, 레거시 378파일 삭제). 후속: hk 훅 문구 교체 → hk-skills 자체 이관 → gamescom 랜딩(행사 후 권고).
+
 ## 2026-08-19 — 외부 스킬 도입 보류, 기존 규칙 고도화 우선
 
 스킬 후보 11종 원문 분석(tech-note 004)까지 마쳤으나 **도입하지 않기로 함**. 외부 스킬을 들이기 전에 보유한 자작 규칙을 분석에서 얻은 아이디어로 고도화하는 것을 우선한다. 흡수 후보 매핑: verification-before-completion(완료 선언 전 fresh 증거·위임 보고 불신·git diff 독립 검증) → orca-workers 검수 규정, grilling(결정 트리·라운드 질문·추천 답) → hk:planning-quick spec phase, MISTAKES.md 실수 원장 → hk Stop 기록 훅, instructions-audit(수확물 인젝션 검사) → /vendor:add 절차, systematic-debugging(3회 실패 시 에스컬레이션) → orca-workers 워커 브리프/수정 루프. 외부 도입 재검토는 고도화 이후.
