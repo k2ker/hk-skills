@@ -27,4 +27,4 @@
 
 - vendor 아키텍처: git-subdir+SHA 전환 vs 복사 유지+SHA 기록 — 사용자 선택 대기 (DECISIONS 2026-08-19 참고)
 - **기존 규칙 고도화 (외부 스킬 도입은 보류 — 2026-08-19 결정)**: 흡수 후보 매핑은 DECISIONS 참고 (verification→orca-workers, grilling→planning-quick, 실수 원장→Stop 훅, instructions-audit→/vendor:add). 착수 범위는 사용자와 정할 것
-- 기록 컨벤션 v2: **Phase A 구현+Codex 2라운드 리뷰 완료(tech-note 007) — 커밋·푸시 승인 대기.** 승인 후: marketplace update → 새 세션 E2E 4시나리오 → Phase B(hk-skills 이관, 태스크 9) → gamescom 랜딩(행사 후, record-pilot 워크트리 보존 중)
+- 기록 컨벤션 v2: **Phase A 배포·E2E 완료**(7300ab6, hk 0.16.0·orca 0.4.6 캐시 반영, 실측은 007 후속절 1) → **다음: Phase B — hk-skills 자체 이관(태스크 9, init/migrate 실전 테스트 겸함) 착수 승인 대기** → gamescom 랜딩(행사 후, record-pilot 워크트리 보존 중). 주의: 이 세션은 구훅(0.14.0)으로 시작됨 — 새 훅은 새 세션부터
