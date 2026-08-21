@@ -21,9 +21,10 @@
 - [004 — 스킬 후보 심층 분석](docs/tech-notes/004-skill-candidates-deep-dive.md) — 도입 판단에 필요한 원문 근거
 - [005 — 기록 컨벤션 감사](docs/tech-notes/005-record-convention-audit.md) — 겹침 5건 진단
 - [006 — v2 플러그인화 리서치](docs/tech-notes/006-record-plugin-packaging-research.md) — 패키징 사례·훅 스펙·하이브리드 게이트
+- [007 — v2 Phase A 구현](docs/tech-notes/007-record-v2-phase-a-impl.md) — 산출물 5종·설계 결정·리뷰 결산·수용 한계
 
 ## 미결 (다음 세션이 이어받을 것)
 
 - vendor 아키텍처: git-subdir+SHA 전환 vs 복사 유지+SHA 기록 — 사용자 선택 대기 (DECISIONS 2026-08-19 참고)
 - **기존 규칙 고도화 (외부 스킬 도입은 보류 — 2026-08-19 결정)**: 흡수 후보 매핑은 DECISIONS 참고 (verification→orca-workers, grilling→planning-quick, 실수 원장→Stop 훅, instructions-audit→/vendor:add). 착수 범위는 사용자와 정할 것
-- 기록 컨벤션 v2 채택 확정(2026-08-21) → **플러그인 아키텍처 제안까지 완료, Phase A 착수 승인 대기** — 제안: Stop 하이브리드 게이트(프리필터 5단 → 잔여만 LLM) + record 스킬 + /hk:record:init + 워커 마커(.hk/worker). 근거는 tech-note 006, 상세 제안은 세션 대화. 이후: ② hk-skills 자체 이관 ③ gamescom 랜딩(행사 후, record-pilot 워크트리 보존 중)
+- 기록 컨벤션 v2: **Phase A 구현+Codex 2라운드 리뷰 완료(tech-note 007) — 커밋·푸시 승인 대기.** 승인 후: marketplace update → 새 세션 E2E 4시나리오 → Phase B(hk-skills 이관, 태스크 9) → gamescom 랜딩(행사 후, record-pilot 워크트리 보존 중)

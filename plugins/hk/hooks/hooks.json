@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -f MEMORY.md ] || [ -f docs/DECISIONS.md ] || [ -d docs/tech-notes ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[기록 컨벤션 감지] 작업 시작 전 루트 MEMORY.md(현재 상태·컨텍스트·교훈)와 docs/DECISIONS.md(공식 결정)를 먼저 읽어라. 이전 작업을 이어가면 관련 docs/tech-notes/00N도 확인. 완료 시엔 tech-note append + MEMORY.md 갱신(+ 새 결정이면 DECISIONS.md).\"}}'; fi"
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" 2>/dev/null; if [ -d docs/log ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[기록 컨벤션 v2] 이 프로젝트는 조각 로그 컨벤션을 쓴다. 시작: MEMORY.md(책갈피 — 미결·한시 계약)부터 읽어라. 일단락 시: docs/log/YYYY-MM-DD-주제.md 조각 1개(순번 금지·박제, 번복은 새 조각+refs). 미결 변화는 MEMORY 갱신(항목 3줄), 결정은 docs/DECISIONS.md(3줄 상한). 정본 중복 금지·trivial 면제. 위임 워커는 기록 금지 — 보고만, 기록은 리드가 랜딩 때(면제 마커 규약은 record 스킬). 상세 규칙: record 스킬.\"}}'; elif [ -f MEMORY.md ] || [ -f docs/DECISIONS.md ] || [ -d docs/tech-notes ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[기록 컨벤션 v1 감지] 작업 시작 전 루트 MEMORY.md와 docs/DECISIONS.md를 먼저 읽어라. 이전 작업을 이어가면 관련 docs/tech-notes/00N도 확인. 완료 시엔 이 프로젝트의 기존 컨벤션대로 기록하라. 참고: v2(조각 로그)로의 전환은 /hk:record:migrate — 사용자가 원할 때만.\"}}'; fi"
           }
         ]
       }
@@ -24,8 +24,9 @@
       {
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "이 훅은 매 턴(응답) 종료 시 돈다(세션 종료가 아님). 목적: 기록 컨벤션을 쓰는 프로젝트에서, 다음 세션이 알아야 할 실질 작업을 기록 없이 마무리하는 것을 막는다.\n\n[통과 조건] 다음 중 하나면 {\"ok\": true} 반환 — 차단보다 먼저 검사하라:\n- **이 프로젝트에 MEMORY.md·docs/DECISIONS.md·docs/tech-notes 가 하나도 없음**(컨벤션 미사용 프로젝트). 기록 요구는 이 컨벤션을 쓰는 프로젝트에서만 한다 — 대화에서 이 파일들의 존재가 확인된 적 없으면 미사용으로 간주. 컨벤션 미사용 프로젝트에 이 파일들을 새로 만들라고 요구하지 마라\n- 이 세션이 다른 에이전트의 브리프/디스패치로 도는 **위임 워커**이고 브리프가 기록·추가작업을 금지함\n- **아직 작업이 진행 중이라 기록 단위가 안 끝났음**(다음 턴에 이어감) — 매 턴 도는 훅이므로 mid-work 턴은 반드시 통과\n- 단순 대화·질문 응답·계획 논의, 또는 오타/사소한 설정 같은 trivial 변경뿐\n- 이미 이번 작업분을 docs/tech-notes·MEMORY.md·docs/DECISIONS.md 중 하나, 또는 그 프로젝트의 실제 기록 표준(references 문서·커밋 메시지 등)에 기록함\n- 기록할 만한 실질 작업이 없음\n\n[차단 조건] 위 어디에도 해당하지 않고, 기록할 가치가 있는 실질 작업(기능 구현·버그 수정·조사/디버깅 결론·주요 의사결정·아키텍처 변경 등)이 **일단락**됐는데 아직 미기록이면 다음을 반환:\n{\"ok\": false, \"reason\": \"<이번 작업 요지 + docs/tech-notes 에 무엇을 append 하고 MEMORY.md 를 어떻게 갱신할지. 새 결정이 있었으면 docs/DECISIONS.md 도 갱신>\"}\n\n[원칙] 애매하면 {\"ok\": true} — 매 턴 도는 훅이라 과잉 차단은 노이즈다. 확실히 '컨벤션 사용 프로젝트 + 작업 일단락 + 미기록'일 때만 막아라."
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/record-gate.sh\"",
+            "timeout": 30
           }
         ]
       }
