@@ -26,4 +26,4 @@
 
 - vendor 아키텍처: git-subdir+SHA 전환 vs 복사 유지+SHA 기록 — 사용자 선택 대기 (DECISIONS 2026-08-19 참고)
 - **기존 규칙 고도화 (외부 스킬 도입은 보류 — 2026-08-19 결정)**: 흡수 후보 매핑은 DECISIONS 참고 (verification→orca-workers, grilling→planning-quick, 실수 원장→Stop 훅, instructions-audit→/vendor:add). 착수 범위는 사용자와 정할 것
-- 기록 컨벤션 v2 **채택 확정**(2026-08-21, DECISIONS 참고) — 남은 것: ① hk 훅 문구 교체(초안 사용자 확인 후) ② hk-skills 자체를 조각 로그 형태로 이관 ③ gamescom 파일럿 랜딩 시점 결정(행사 후 권고, record-pilot 워크트리 보존 중)
+- 기록 컨벤션 v2 채택 확정(2026-08-21) → **플러그인 아키텍처 제안까지 완료, Phase A 착수 승인 대기** — 제안: Stop 하이브리드 게이트(프리필터 5단 → 잔여만 LLM) + record 스킬 + /hk:record:init + 워커 마커(.hk/worker). 근거는 tech-note 006, 상세 제안은 세션 대화. 이후: ② hk-skills 자체 이관 ③ gamescom 랜딩(행사 후, record-pilot 워크트리 보존 중)
