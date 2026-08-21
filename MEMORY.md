@@ -20,6 +20,7 @@
 - [003 — 플러그인 settings/MCP 배포 제약: settings는 agent 필드만, MCP는 .mcp.json 필수](docs/tech-notes/003-plugin-settings-mcp-constraints.md)
 - [004 — 스킬 후보 심층 분석](docs/tech-notes/004-skill-candidates-deep-dive.md) — 도입 판단에 필요한 원문 근거
 - [005 — 기록 컨벤션 감사](docs/tech-notes/005-record-convention-audit.md) — 겹침 5건 진단
+- [006 — v2 플러그인화 리서치](docs/tech-notes/006-record-plugin-packaging-research.md) — 패키징 사례·훅 스펙·하이브리드 게이트
 
 ## 미결 (다음 세션이 이어받을 것)
 
