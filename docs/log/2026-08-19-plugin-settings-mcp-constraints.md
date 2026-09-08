@@ -1,4 +1,10 @@
-# 003 — Claude Code 플러그인의 settings/MCP 배포 제약 (2026-08-19)
+---
+date: 2026-08-19
+type: note
+refs: [tech-note 003]
+---
+
+# Claude Code 플러그인의 settings/MCP 배포 제약 (2026-08-19)
 
 "플러그인에 settings.json을 동봉해 권한까지 배포할 수 있나?"를 공식 문서(plugins-reference·plugins·settings)로 확인한 결과. hk 번들 MCP 동봉 설계의 근거.
 

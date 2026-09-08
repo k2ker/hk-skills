@@ -1,4 +1,10 @@
-# 007 — record 컨벤션 v2 Phase A 구현 (2026-08-21)
+---
+date: 2026-08-21
+type: note
+refs: [tech-note 007]
+---
+
+# record 컨벤션 v2 Phase A 구현 (2026-08-21)
 
 Phase A 산출물 5종 구현 + Codex 2라운드 교차 리뷰 + 수정 완료. **미커밋 — 사용자 승인 대기.** 사실만 기록.
 

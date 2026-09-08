@@ -86,3 +86,8 @@ plugins/<bundle>/
 - **왜 `plugins/`에 두나**: 소비자가 쓰려면 스킬이 `plugins/vendor/skills/`에 **커밋된 실제 복사본**이어야 한다 — Claude Code 플러그인·Hermes 둘 다 `plugins/`만 읽는다. `npx skills`는 `.claude/skills`에만 넣으니 옮기는 단계가 필수. 옮긴 뒤엔 `skills update`가 못 닿아 갱신도 `/vendor:update`로 재수확한다.
 - **출처 기록**: `VENDORED-SKILLS.md`.
 - **유지보수 도구는 `.claude/skills/`에**: 이 repo를 관리하는 에이전트가 스킬 찾기·만들기에 쓰는 `find-skills`·`skill-creator`는 repo의 `.claude/skills/`에 둔다(그래야 이 세션에서 실제로 쓴다). `plugins/`의 스킬은 이 repo에선 **자동 로드 안 됨** — 배포 원본일 뿐이다.
+
+## 기록 컨벤션
+
+이 프로젝트는 조각 로그 컨벤션을 쓴다 — 일단락은 `docs/log/YYYY-MM-DD-주제.md` 조각으로(순번 금지·박제), 지금 참인 것은 `MEMORY.md`(미결·사용자/작업 방식·제약·참조). 병렬 워커는 기록 금지(보고만, 리드가 랜딩 때 기록). 규칙 정본은 hk 플러그인 `record` 스킬 (`docs/log/README.md`는 로컬 요약이자 적용 표식).
+
