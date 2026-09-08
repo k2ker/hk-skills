@@ -1,5 +1,5 @@
 #!/bin/bash
-# 기록 게이트 (record 컨벤션 v2) — Stop 훅용 하이브리드.
+# 기록 게이트 (record 컨벤션) — Stop 훅용 하이브리드.
 # 설계: 프리필터(무비용)로 뻔한 통과를 조기 처리하고, 잔여 턴만 LLM 판정.
 # 원칙: fail-open — 판단 불가·오류·타임아웃은 전부 통과(exit 0).
 #       차단은 exit 2가 아니라 stdout JSON (플러그인 훅 exit 2 오동작 회피 — anthropics/claude-code#10412).
@@ -42,11 +42,12 @@ fi
 [ -z "$ROOT" ] && ROOT="$CWD"
 if [ -n "$ROOT" ] && [ -d "$ROOT" ]; then cd "$ROOT" 2>/dev/null || exit 0; else exit 0; fi
 
-# ② 컨벤션 미사용 프로젝트 → 통과 (이 프로젝트의 게이트 비용은 영원히 0)
+# ② 기록 문서가 없는 프로젝트 → 통과 (이 프로젝트의 게이트 비용은 영원히 0)
+#    ACTIVE=조각 로그 적용됨(docs/log) / LEGACY=기록물은 있으나 미적용 → 기존 방식 안내
 CONV=""
-[ -d docs/log ] && CONV=v2
+[ -d docs/log ] && CONV=active
 if [ -z "$CONV" ]; then
-  { [ -f MEMORY.md ] || [ -f docs/DECISIONS.md ] || [ -d docs/tech-notes ]; } && CONV=v1
+  { [ -f MEMORY.md ] || [ -f docs/DECISIONS.md ] || [ -d docs/tech-notes ]; } && CONV=legacy
 fi
 [ -z "$CONV" ] && exit 0
 
@@ -86,10 +87,10 @@ case "${RECORD_GATE_JUDGE:-}" in
 esac
 
 if [ "$VERDICT" = "YES" ]; then
-  if [ "$CONV" = "v2" ]; then
-    printf '%s' '{"decision":"block","reason":"[기록 게이트] 일단락된 작업이 미기록으로 보인다. docs/log/YYYY-MM-DD-주제.md 조각 1개를 작성하라(박제 — 번복이면 새 조각+refs). 미결이 바뀌었으면 MEMORY.md 갱신(항목 3줄 이내), 결정이 났으면 docs/DECISIONS.md(3줄 상한). 아직 진행 중이었다면 그대로 계속하고 일단락 시점에 기록하라. 규칙 정본: record 스킬. 쓸 사실·결정·교훈이 없으면 그 사실만 한 줄로 밝히고 종료해도 된다."}'
+  if [ "$CONV" = "active" ]; then
+    printf '%s' '{"decision":"block","reason":"[기록 게이트] 일단락된 작업이 미기록으로 보인다. docs/log/YYYY-MM-DD-주제.md 조각 1개를 작성하라(박제 — 번복이면 새 조각+refs). 미결이 바뀌었으면 MEMORY.md 갱신(항목 3줄 이내), 결정이 났으면 조각 type: decision(또는 그 프로젝트가 DECISIONS를 쓰면 거기). 아직 진행 중이었다면 그대로 계속하고 일단락 시점에 기록하라. 규칙 정본: record 스킬. 쓸 사실·결정·교훈이 없으면 그 사실만 한 줄로 밝히고 종료해도 된다."}'
   else
-    printf '%s' '{"decision":"block","reason":"[기록 게이트] 일단락된 작업이 미기록으로 보인다. 이 프로젝트의 기존 기록 컨벤션(v1)대로 기록하라 — docs/tech-notes append + MEMORY.md 갱신(+ 새 결정이면 docs/DECISIONS.md). v2 조각 구조를 새로 만들지 마라(전환은 사용자가 /hk:record:migrate로 결정). 아직 진행 중이었다면 그대로 계속하라. 쓸 내용이 없으면 그 사실만 밝히고 종료해도 된다."}'
+    printf '%s' '{"decision":"block","reason":"[기록 게이트] 일단락된 작업이 미기록으로 보인다. 이 프로젝트의 기존 기록 방식대로 기록하라 — docs/tech-notes append + MEMORY.md 갱신(+ 새 결정이면 docs/DECISIONS.md). 새 구조를 임의로 만들지 마라(전환은 사용자가 /hk:record:setup으로 결정). 아직 진행 중이었다면 그대로 계속하라. 쓸 내용이 없으면 그 사실만 밝히고 종료해도 된다."}'
   fi
 fi
 exit 0

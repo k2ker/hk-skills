@@ -22,8 +22,14 @@
 - [005 — 기록 컨벤션 감사](docs/tech-notes/005-record-convention-audit.md) — 겹침 5건 진단
 - [006 — v2 플러그인화 리서치](docs/tech-notes/006-record-plugin-packaging-research.md) — 패키징 사례·훅 스펙·하이브리드 게이트
 - [007 — v2 Phase A 구현](docs/tech-notes/007-record-v2-phase-a-impl.md) — 산출물 5종·설계 결정·리뷰 결산·수용 한계
+- [008 — git 동기화 가드](docs/tech-notes/008-git-sync-guard.md) — 목적지 해석·bash 함정 4종·리뷰 수렴 교훈
+- [009 — 기록 컨벤션 구조 개선](docs/tech-notes/009-record-convention-restructure.md) — setup 통합·라벨 폐지·MEMORY 5섹션·재실행 안전성·적용 현황 스캔
 
 ## 미결 (다음 세션이 이어받을 것)
+
+- **git-sync-guard 간결화 완료(98줄·11케이스, tech-note 008) — 커밋 승인 대기.** 남은 결정 2건: ① 테스트 파일 위치 — `plugins/hk/hooks/tests/`(배포에 포함) vs `scripts/tests/`(배포 제외, 권고) ② 교차 리뷰 수렴 규칙(상한 2라운드·HIGH 의무/MED 재량) 채택 여부
+- **record 컨벤션 구조 개선 완료 — 커밋 승인 대기**(hk 0.18.0): init+migrate→`/hk:record:setup` 통합(보충/적용 2모드, **재실행 안전 — `docs/log` 있으면 조각 재처리 금지·잔여는 보고만**), v1/v2 라벨 폐지(`docs/log` 유무로만 판정), MEMORY를 내장 메모리 명세대로(미결·사용자/작업 방식·제약·참조), DECISIONS 필수→선택
+- **세션 메모리(PC 종속) 이관 미이행**: "쉬운 한국어"·"질문≠승인" 등 user·feedback 항목이 아직 `~/.claude/.../memory/`에 있음 → repo MEMORY.md 또는 hk 훅으로 옮기고 폐기할 것
 
 - vendor 아키텍처: git-subdir+SHA 전환 vs 복사 유지+SHA 기록 — 사용자 선택 대기 (DECISIONS 2026-08-19 참고)
 - **기존 규칙 고도화 (외부 스킬 도입은 보류 — 2026-08-19 결정)**: 흡수 후보 매핑은 DECISIONS 참고 (verification→orca-workers, grilling→planning-quick, 실수 원장→Stop 훅, instructions-audit→/vendor:add). 착수 범위는 사용자와 정할 것

@@ -1,5 +1,17 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/git-sync-guard.sh\"",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
@@ -15,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" 2>/dev/null; if [ -d docs/log ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[기록 컨벤션 v2] 이 프로젝트는 조각 로그 컨벤션을 쓴다. 시작: MEMORY.md(책갈피 — 미결·한시 계약)부터 읽어라. 일단락 시: docs/log/YYYY-MM-DD-주제.md 조각 1개(순번 금지·박제, 번복은 새 조각+refs). 미결 변화는 MEMORY 갱신(항목 3줄), 결정은 docs/DECISIONS.md(3줄 상한). 정본 중복 금지·trivial 면제. 위임 워커는 기록 금지 — 보고만, 기록은 리드가 랜딩 때(면제 마커 규약은 record 스킬). 상세 규칙: record 스킬.\"}}'; elif [ -f MEMORY.md ] || [ -f docs/DECISIONS.md ] || [ -d docs/tech-notes ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[기록 컨벤션 v1 감지] 작업 시작 전 루트 MEMORY.md와 docs/DECISIONS.md를 먼저 읽어라. 이전 작업을 이어가면 관련 docs/tech-notes/00N도 확인. 완료 시엔 이 프로젝트의 기존 컨벤션대로 기록하라. 참고: v2(조각 로그)로의 전환은 /hk:record:migrate — 사용자가 원할 때만.\"}}'; fi"
+            "command": "cd \"${CLAUDE_PROJECT_DIR:-.}\" 2>/dev/null; if [ -d docs/log ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[기록 컨벤션] 이 프로젝트는 조각 로그 컨벤션을 쓴다. 시작: MEMORY.md(미결·사용자/작업 방식·제약·참조)부터 읽어라. 일단락 시: docs/log/YYYY-MM-DD-주제.md 조각 1개(순번 금지·박제, 번복은 새 조각+refs). 미결 변화는 MEMORY 갱신(항목 3줄). 정본 중복 금지·trivial 면제. 위임 워커는 기록 금지 — 보고만, 기록은 리드가 랜딩 때. 상세 규칙: record 스킬.\"}}'; elif [ -f MEMORY.md ] || [ -f docs/DECISIONS.md ] || [ -d docs/tech-notes ]; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"[기록물 감지] 이 프로젝트엔 기록 문서가 있으나 조각 로그 컨벤션(docs/log)은 적용 전이다. 기존 기록(MEMORY.md·docs/DECISIONS.md·docs/tech-notes 등)을 먼저 읽고, 완료 시엔 그 프로젝트의 기존 방식대로 기록하라 — 새 구조를 임의로 만들지 마라. 전환은 /hk:record:setup (사용자가 원할 때만).\"}}'; fi"
           }
         ]
       }

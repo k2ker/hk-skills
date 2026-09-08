@@ -13,7 +13,7 @@
     {
       "name": "hk",
       "source": "./plugins/hk",
-      "description": "hk personal cross-project custom commands + hooks + skills + MCP. 기록 컨벤션 v2: 스킬 record(조각 로그+책갈피 정본) + /hk:record:init·migrate + Stop 하이브리드 기록 게이트(프리필터 5단→조건부 LLM). /hk:pre-clear:save·resume — /clear 전후 세션 핸드오프. /hk:planning-quick — 4-phase sub-plan. 스킬 amplify-monitor — Amplify 배포 모니터링. MCP 동봉: context7·figma-desktop."
+      "description": "hk personal cross-project custom commands + hooks + skills + MCP. 기록 컨벤션: 스킬 record(조각 로그+MEMORY 정본) + /hk:record:setup(적용·이관, 재실행 안전) + Stop 기록 게이트(프리필터→조건부 LLM) + PreToolUse git 동기화 가드(push 전 원격 뒤처짐 차단). /hk:pre-clear:save·resume — /clear 전후 세션 핸드오프. /hk:planning-quick — 4-phase sub-plan. 스킬 amplify-monitor — Amplify 배포 모니터링. MCP 동봉: context7·figma-desktop."
     },
     {
       "name": "orca",
