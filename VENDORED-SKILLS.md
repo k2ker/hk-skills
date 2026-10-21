@@ -43,6 +43,12 @@
 
 ## 최신판 대조 이력
 
+### 2026-10-21 — 25개 전수 재수확, diff 생략 일괄 덮어쓰기
+
+사용자 지시로 diff 검토 없이 새로 받은 것으로 전부 덮어씀(`vercel-cli-with-tokens`는 업스트림 부재로 제외). **9개 변경**: frontend-design, playwright-cli, prisma-cli, shadcn, supabase, tailwind-design-system(references만), ui-ux-pro-max, vercel-cli, vitest. 나머지는 동일(로컬에만 있던 LICENSE·metadata.json 여분 제거).
+
+- `turborepo` — **업스트림이 스킬을 축소**: 951줄 가이드+references 트리 → 26줄, "`node_modules/turbo/docs/README.md` 번들 문서를 읽어라"는 안내만 남음. 프로젝트에 turbo가 깔려 있어야 쓸모 있음.
+
 ### 2026-08-18 — 26개 전수 대조 + 7개 일괄 갱신
 
 병렬 수확(`npx skills add` → `diff -rq`, 원본 repo 17개)으로 전수 대조. **18개 동일**(LICENSE만 로컬 여분인 vitest·shadcn·playwright-cli 포함), **7개 갱신 적용**, **1개 업스트림 소멸**:
