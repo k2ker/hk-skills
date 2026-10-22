@@ -28,7 +28,6 @@
 ## 참조
 
 - 벤더 스킬 출처·대조 이력 → [`VENDORED-SKILLS.md`](VENDORED-SKILLS.md) (전용 장부 — 여기 중복 기록 금지)
-- orca-workers 실측 정본(스킬과 함께 배포됨) → `plugins/orca/skills/orca-workers/references/`
 - 기록 컨벤션 규칙 정본 → hk 플러그인 `record` 스킬 (로컬 요약: [`docs/log/README.md`](docs/log/README.md))
 
 ## 인덱스

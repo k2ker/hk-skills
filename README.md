@@ -8,8 +8,7 @@
 | 번들(플러그인) | 스킬 수 | 설명 |
 |---|---|---|
 | `dev` | 6 | Web frontend (React/Next) 팀 컨벤션 스킬: 컴포넌트·Context·Next.js App Router·Tailwind·TanStack Query 패턴 + client/server API-only 경계(브라우저 DB 직접접근·secret 노출 차단). |
-| `hk` | 2 | hk personal cross-project custom commands + hooks + skills + MCP. 기록 컨벤션: 스킬 record(조각 로그+MEMORY 정본) + /hk:record:setup(적용·이관, 재실행 안전) + Stop 기록 게이트(프리필터→조건부 LLM) + PreToolUse git 동기화 가드(push 전 원격 뒤처짐 차단). /hk:pre-clear:save·resume — /clear 전후 세션 핸드오프. /hk:planning-quick — 4-phase sub-plan. 스킬 amplify-monitor — Amplify 배포 모니터링. MCP 동봉: context7·figma-desktop. |
-| `orca` | 1 | Standalone Orca orchestration bundle. Skill `orca-workers` — coordinate parallel sub-worktree workers for one feature/page cycle (provision → brief → supervised dispatch → cross-model Codex review → fix loop → integration landing). Command mechanics delegate to Orca's own orca-cli/orchestration skills. |
+| `hk` | 3 | hk personal cross-project custom commands + hooks + skills + MCP. 기록 컨벤션: 스킬 record(조각 로그+MEMORY 정본) + /hk:record:setup(적용·이관, 재실행 안전) + Stop 기록 게이트(프리필터→조건부 LLM) + PreToolUse git 동기화 가드(push 전 원격 뒤처짐 차단). /hk:pre-clear:save·resume — /clear 전후 세션 핸드오프. /hk:planning-quick — 4-phase sub-plan. 스킬 amplify-monitor — Amplify 배포 모니터링. 스킬 orca-workers — Orca 병렬 워커 감독의 hk 규칙(워크트리 준비·hk-worker 마커·브리프·Codex 교차 리뷰·랜딩; 명령은 Orca 정본에 위임). MCP 동봉: context7·figma-desktop. |
 | `vendor` | 26 | 외부(벤더) 스킬 모음 — 출처·버전(SHA)·라이선스는 VENDORED-SKILLS.md 참고. /vendor:add|update|remove 로 관리. |
 <!-- BUNDLES:END -->
 
@@ -56,7 +55,6 @@ Hermes는 마켓플레이스로 install하지 않고, 쓰려는 프로필의 `sk
 - 웹(React/Next): `dev`
 - 웹 + 개인 커맨드/훅: `dev hk`
 - 웹 + 외부 라이브러리 스킬: `dev vendor` (vendor는 필요한 스킬만 골라 켜기)
-- 멀티에이전트 오케스트레이션: `orca`
 
 ## 업데이트
 
